@@ -14,10 +14,6 @@ log = "0.4"
 rustls = { version = "0.23", default-features = false, features = ["ring", "std", "logging", "tls12"] } 
 webpki-roots = "0.26"
 ring = "0.17"
-
-[profile.release]
-opt-level = 3
-lto = true
-codegen-units = 1
-panic = "abort" 
-debug = true 
+ryu = "1.0" 
+itoa = "1.0"
+hex = "0.4"

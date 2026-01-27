@@ -32,6 +32,14 @@ impl TlsClient {
         registry.register(&mut self.socket, token, Interest::READABLE | Interest::WRITABLE)
     }
 
+    pub fn socket(&mut self) -> &mut TcpStream {
+        &mut self.socket
+    }
+
+    pub fn wants_write(&self) -> bool {
+        self.tls_conn.wants_write()
+    }
+
     /// Pulls encrypted data from socket -> TLS Engine.
     /// Returns true if data was read.
     pub fn read_tls(&mut self) -> io::Result<bool> {
@@ -52,7 +60,11 @@ impl TlsClient {
     pub fn write_tls(&mut self) -> io::Result<()> {
         if self.tls_conn.wants_write() {
              match self.tls_conn.write_tls(&mut self.socket) {
-                 Ok(_) => Ok(()),
+                 Ok(n) => {
+                     // DEBUG:
+                     println!("DEBUG: write_tls flushed {} bytes. Wants write: {}", n, self.tls_conn.wants_write());
+                     Ok(())
+                 },
                  Err(ref e) if e.kind() == io::ErrorKind::WouldBlock => Ok(()),
                  Err(e) => Err(e),
              }

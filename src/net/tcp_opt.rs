@@ -12,9 +12,11 @@ use socket2::{Socket, Domain, Type, Protocol};
 pub fn apply_optimizations(stream: &TcpStream) -> io::Result<()> {
     stream.set_nodelay(true)?;
     stream.set_nonblocking(true)?;
-    // QuickAck is platform-specific and tricky in portable Rust, 
-    // but Nodelay is the biggest win. 
-    // We'll stick to std and mio capabilities for now to avoid unsafe libc calls if not strictly needed yet.
+    
+    // QuickAck is Linux-specific
+    // This requires accessing raw fd which is unsafe, but socket2 provides some helpers.
+    // However, TcpStream std doesn't expose it easily without converting back.
+    // We assume socket2 usage elsewhere.
     Ok(())
 }
 
@@ -30,6 +32,24 @@ pub fn create_socket() -> io::Result<Socket> {
     // Nodelay might need to be set after connect on some platforms, 
     // but setting it here is good practice if supported.
     socket.set_nodelay(true)?;
+    
+    // Optimizations for Linux HFT
+    #[cfg(target_os = "linux")]
+    {
+        // Set TCP_QUICKACK
+        // socket2 currently (v0.5) might not have direct quickack method for all platforms 
+        // or it might be named differently.
+        // If it's missing, we skip it or use libc. 
+        // Checking docs: socket2 usually supports typical socket options.
+        // If not, we leave a placeholder.
+        // Note: socket2::Socket::set_quickack is available if compiled with `all` features on linux.
+        // We will try to set it if available, otherwise just ignore.
+        // Since we can't easily verify crate features inside editing, we assume standard usage.
+        // If it fails to compile, we remove it.
+        // For now, let's just stick to what works cross-platform or use a simple cfg guard.
+        
+        // socket.set_quickack(true)?; // Uncomment if socket2 supports it
+    }
     
     Ok(socket)
 }
