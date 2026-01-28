@@ -62,7 +62,7 @@ impl WsClient {
     }
 
     pub fn read<'a>(&mut self, buf: &'a mut [u8]) -> io::Result<usize> {
-        self.tls.read_plaintext(buf)
+        self.tls.read(buf)
     }
     
     pub fn write_tls(&mut self) -> io::Result<()> {

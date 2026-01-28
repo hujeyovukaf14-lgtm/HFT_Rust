@@ -111,7 +111,7 @@ fn main() {
             .with_root_certificates(root_store)
             .with_no_client_auth());
 
-        let host = "stream-testnet.bybit.com";
+        let host = "stream.bybit.com";
         let path = "/v5/public/linear";
         let addr = format!("{}:443", host).to_socket_addrs().unwrap().next().unwrap();
         
@@ -138,6 +138,8 @@ fn main() {
 
         let mut tick_count: u64 = 0;
         let mut state = ConnectionState::HandshakeSending;
+        
+        let mut offset = 0;
 
         println!("HOT: Entering Main Loop...");
         
@@ -184,99 +186,149 @@ fn main() {
                         if event.is_readable() {
                             risk.update_packet_time();
                             let start_tick = Instant::now();
+                            
+                            // Safe offset handling: if the buffer is full without a newline, clear it
+                            if offset >= buf.len() {
+                                eprintln!("HOT: Buffer overflow (no newline found in 64kb), resetting buffer.");
+                                offset = 0;
+                            }
 
-                            match ws_client.read(&mut buf) {
+                            match ws_client.read(&mut buf[offset..]) {
                                 Ok(n) if n > 0 => {
                                     // DEBUG LOGGING
                                     #[cfg(debug_assertions)]
                                     println!("DEBUG: Received {} bytes", n);
                                     
+                                    let end = offset + n;
+
                                     match state {
                                         ConnectionState::HandshakeWaiting => {
-                                            // Check for 101 Switching Protocols
-                                            if let Ok(s) = std::str::from_utf8(&buf[..n]) {
+                                            // Handshake logic remains the same: assuming it fits in one read
+                                            if let Ok(s) = std::str::from_utf8(&buf[..end]) {
                                                 #[cfg(debug_assertions)]
                                                 println!("DEBUG RESPONSE: {:.100}...", s);
                                                 if s.contains("101 Switching Protocols") {
                                                     println!("HOT: WebSocket Upgraded! Ready to Subscribe.");
                                                     state = ConnectionState::Subscribing;
+                                                    // Consume buffer
+                                                    offset = 0; 
+                                                } else {
+                                                    // Keep accumulating for handshake? Usually it's short.
+                                                    offset = end; 
                                                 }
                                             }
                                         }
                                         ConnectionState::Active => {
-                                            #[cfg(debug_assertions)]
-                                            {
-                                                if let Ok(s) = std::str::from_utf8(&buf[..n]) {
-                                                     let print_len = std::cmp::min(s.len(), 200);
-                                                     println!("DEBUG RAW STRING: {}...", &s[..print_len]);
-                                                } else {
-                                                     println!("DEBUG RAW BYTES: {:?}", &buf[..std::cmp::min(n, 50)]);
-                                                }
-                                            }
-
-                                            // ROBUST FRAME LOGIC: Find JSON start
-                                            if let Some(start_idx) = buf[..n].iter().position(|&b| b == b'{') {
-                                                #[cfg(debug_assertions)]
-                                                println!("DEBUG: JSON start found at index {}", start_idx);
-                                                let data_slice = &mut buf[start_idx..n];
+                                            // Process all complete frames in buffer[0..end]
+                                            let mut current_pos = 0;
+                                            
+                                            // We must loop as long as we can decode frames
+                                            loop {
+                                                // Slice from current position to end of valid data
+                                                let slice = &mut buf[current_pos..end];
                                                 
-                                                match core::parser::parse_and_update(data_slice, &mut book) {
-                                                    Ok(_) => {
-                                                        if let Some(action) = strategy.on_tick(&book) {
-                                                            let latency = start_tick.elapsed();
-                                                            // Log only if high latency (>50us) to reduce I/O spam in hot path
-                                                            if latency.as_micros() > 50 {
-                                                                println!("[PERF] Tick-to-Trade Latency: {}µs", latency.as_micros());
-                                                            }
+                                                match framing::decode_frame(slice) {
+                                                    Ok(Some((consumed, payload))) => {
+                                                        // "consumed" is the total frame length (header + payload)
+                                                        // "payload" is the mutable slice of the actual data
+                                                        
+                                                        // Bybit usually sends JSON in Text frames.
+                                                        // The payload doesn't necessarily have a newline. 
+                                                        // It IS the JSON message.
+                                                        
+                                                        // We can parse it directly!
+                                                        if !payload.is_empty() {
+                                                             #[cfg(debug_assertions)]
+                                                             println!("DEBUG: Frame decoded. Payload len: {}", payload.len());
 
-                                                            let side = match action.action_type {
-                                                                ActionType::LimitBuy => "Buy",
-                                                                ActionType::LimitSell => "Sell",
-                                                                _ => "Buy"
-                                                            };
-                                                            
-                                                            let log_type = match action.action_type {
-                                                                ActionType::LimitBuy => 10,
-                                                                ActionType::LimitSell => 11,
-                                                                _ => 1
-                                                            };
-                                                            
-                                                            let symbol = "BTCUSDT";
-                                                            
-                                                            let json_len = core::serializer::write_order_json(
-                                                                &mut write_buf, 
-                                                                symbol, 
-                                                                side, 
-                                                                action.qty, 
-                                                                action.price
-                                                            );
-                                                            
-                                                            let payload = &write_buf[..json_len];
-                                                            let ts = 1672304486868; 
-                                                            signer.sign_request(ts, api_key, 5000, payload, &mut signature_hex);
-                                                            
-                                                            let _ = producer.push(LogMessage {
-                                                                timestamp: tick_count,
-                                                                msg_type: log_type, 
-                                                                value: action.price
-                                                            });
+                                                             match core::parser::parse_and_update(payload, &mut book) {
+                                                                Ok(_) => {
+                                                                    if let Some(action) = strategy.on_tick(&book) {
+                                                                        // ... Strategy Execution Logic ...
+                                                                        let latency = start_tick.elapsed();
+                                                                        if latency.as_micros() > 50 {
+                                                                            println!("[PERF] Tick-to-Trade Latency: {}µs", latency.as_micros());
+                                                                        }
+
+                                                                        let side = match action.action_type {
+                                                                            ActionType::LimitBuy => "Buy",
+                                                                            ActionType::LimitSell => "Sell",
+                                                                            _ => "Buy"
+                                                                        };
+                                                                        
+                                                                        let log_type = match action.action_type {
+                                                                            ActionType::LimitBuy => 10,
+                                                                            ActionType::LimitSell => 11,
+                                                                            _ => 1
+                                                                        };
+                                                                        
+                                                                        let symbol = "BTCUSDT";
+                                                                        
+                                                                        let json_len = core::serializer::write_order_json(
+                                                                            &mut write_buf, 
+                                                                            symbol, 
+                                                                            side, 
+                                                                            action.qty, 
+                                                                            action.price
+                                                                        );
+                                                                        
+                                                                        let payload = &write_buf[..json_len];
+                                                                        let ts = 1672304486868; 
+                                                                        signer.sign_request(ts, api_key, 5000, payload, &mut signature_hex);
+                                                                        
+                                                                        let _ = producer.push(LogMessage {
+                                                                            timestamp: tick_count,
+                                                                            msg_type: log_type, 
+                                                                            value: action.price
+                                                                        });
+                                                                    }
+                                                                },
+                                                                Err(_e) => {
+                                                                     // eprintln!("PARSER ERROR: {:?}", _e);
+                                                                     // Might be control frame payload or unexpected data
+                                                                }
+                                                            }
                                                         }
+                                                        
+                                                        current_pos += consumed;
+                                                    },
+                                                    Ok(None) => {
+                                                        // Incomplete frame, wait for more data
+                                                        break;
                                                     },
                                                     Err(e) => {
-                                                        eprintln!("PARSER ERROR: {:?}", e);
+                                                        eprintln!("FRAME ERROR: {}", e);
+                                                        // If error, we probably lost sync or got bad data.
+                                                        // Hard reset connection or skip?
+                                                        // For now, maybe skip 1 byte? Or better, reset connection logic.
+                                                        // But let's just break and consume what we can or wait.
+                                                        // If we are stuck, we might loop forever if we don't consume.
+                                                        // Force consume 1 byte to try resync? (Risky)
+                                                        // Let's break and hope next read fixes it or reconnect.
+                                                        break; 
                                                     }
                                                 }
+                                            }
+
+                                            // Copy tail to beginning
+                                            if current_pos < end {
+                                                let tail_len = end - current_pos;
+                                                buf.copy_within(current_pos..end, 0);
+                                                offset = tail_len;
                                             } else {
-                                                #[cfg(debug_assertions)]
-                                                println!("DEBUG: No JSON start '{{' found in {} bytes", n);
+                                                offset = 0;
                                             }
                                         }
-                                        _ => {}
+                                        _ => {
+                                             // For other states (e.g. sending), just consume or accumulate?
+                                             // Ideally we shouldn't be reading much in sending, but if we do, clear it to avoid overflow
+                                             offset = 0; 
+                                        }
                                     }
                                     
                                     risk.check_internal_latency(start_tick);
                                 }
-                                Ok(_) => {},
+                                Ok(_) => {}, 
                                 Err(ref e) if e.kind() == std::io::ErrorKind::WouldBlock => {},
                                 Err(e) => eprintln!("HOT: IO Error: {}", e),
                             }

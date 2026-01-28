@@ -74,11 +74,46 @@ impl TlsClient {
     }
 
     /// Reads PLAINTEXT from the internal TLS buffer into `buf`.
-    pub fn read_plaintext(&mut self, buf: &mut [u8]) -> io::Result<usize> {
-        let _ = self.read_tls()?; 
+    /// Guarantees that we pull from socket, process packets, and then read from buffer.
+    pub fn read(&mut self, buf: &mut [u8]) -> io::Result<usize> {
+        // 1. Try to read from socket into TLS buffer
+        let mut socket_eof = false;
+        
+        match self.tls_conn.read_tls(&mut self.socket) {
+             Ok(0) => {
+                 socket_eof = true;
+             },
+             Ok(_) => {
+                 // Got data, proceeding
+             },
+             Err(ref e) if e.kind() == io::ErrorKind::WouldBlock => {
+                 // Continue to check if we have decrypted data available
+             },
+             Err(e) => return Err(e),
+        }
+
+        // 2. Process any new packets (decrypt)
+        // We do this even if read_tls was WouldBlock, in case there's processed data pending? 
+        // Or strictly as requested: "Call self.conn.process_new_packets()"
+        let _state = self.tls_conn.process_new_packets()
+            .map_err(|e| io::Error::new(io::ErrorKind::InvalidData, e.to_string()))?;
+
+        // 3. Read decrypted data
         match self.tls_conn.reader().read(buf) {
+            Ok(0) => {
+                // If buffer len is 0, normal read behavior is Ok(0)
+                if buf.is_empty() {
+                    return Ok(0);
+                }
+                // If we got EOF from socket and no more data in buffer -> return EOF (0)
+                if socket_eof {
+                    Ok(0)
+                } else {
+                    // Otherwise it's a genuine WouldBlock (waiting for network)
+                    Err(io::Error::from(io::ErrorKind::WouldBlock))
+                }
+            },
             Ok(n) => Ok(n),
-            Err(ref e) if e.kind() == io::ErrorKind::WouldBlock => Ok(0),
             Err(e) => Err(e),
         }
     }
