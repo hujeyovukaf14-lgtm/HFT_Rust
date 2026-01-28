@@ -4,6 +4,7 @@ use std::thread;
 use std::time::{Duration, Instant};
 use std::net::ToSocketAddrs;
 use std::sync::Arc;
+use std::io::Write; // Import Write for flush
 use rustls::{ClientConfig, RootCertStore};
 
 use mio::{Events, Poll, Token};
@@ -100,6 +101,7 @@ fn main() {
         // Strategy is now mutable
         let mut strategy = MarketMaker::new(0.01); 
         let mut risk = RiskEngine::new();
+        let mut last_latency = 0; // Track last execution latency
         
         let api_key = "TEST_API_KEY";
         let signer = Signer::new("TEST_SECRET_KEY");
@@ -250,7 +252,8 @@ fn main() {
                                                                  // ... EXECUTION ...
                                                                  // (Copy-paste Execution Logic from before)
                                                                 let latency = start_tick.elapsed();
-                                                                println!("[PERF] Bybit Tick Latency: {}µs", latency.as_micros());
+                                                                // println!("[PERF] Bybit Tick Latency: {}µs", latency.as_micros());
+                                                                last_latency = latency.as_micros();
 
                                                                 let side = match action.action_type {
                                                                     ActionType::LimitBuy => "Buy",
@@ -286,7 +289,14 @@ fn main() {
                                                              }
                                                          }
                                                     }
-                                                    current_pos += consumed;
+                                                     print!("\rBybit: {:.2}/{:.2} | Binance: {:.2}/{:.2} | Diff: {:.2} | Latency: {}us     ", 
+                                                         book.bids[0].price, book.asks[0].price, 
+                                                         strategy.binance_bid, strategy.binance_ask, 
+                                                         (strategy.binance_bid - book.asks[0].price).max(book.bids[0].price - strategy.binance_ask),
+                                                         last_latency
+                                                     );
+                                                     let _ = std::io::stdout().flush();
+                                                     current_pos += consumed;
                                                 },
                                                 Ok(None) => break,
                                                 Err(_) => break, // Drop invalid
@@ -369,8 +379,8 @@ fn main() {
                                                                  // Trigger arb check immediately
                                                                  if let Some(action) = strategy.on_tick(&book) {
                                                                     let latency = start_tick.elapsed();
-                                                                    println!("[PERF] Binance Signal Latency: {}µs", latency.as_micros());
-
+                                                                    last_latency = latency.as_micros();
+                                                                    
                                                                     // EXECUTION (Bybit)
                                                                     let side = match action.action_type {
                                                                         ActionType::LimitBuy => "Buy",
@@ -398,6 +408,13 @@ fn main() {
                                                                         value: action.price
                                                                     });
                                                                  }
+                                                                 print!("\rBybit: {:.2}/{:.2} | Binance: {:.2}/{:.2} | Diff: {:.2} | Latency: {}us     ", 
+                                                                     book.bids[0].price, book.asks[0].price, 
+                                                                     bid, ask, 
+                                                                     (bid - book.asks[0].price).max(book.bids[0].price - ask),
+                                                                     last_latency
+                                                                 );
+                                                                 let _ = std::io::stdout().flush();
                                                              }
                                                          }
                                                      }
