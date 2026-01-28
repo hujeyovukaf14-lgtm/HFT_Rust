@@ -41,6 +41,7 @@ enum ConnectionState {
     HandshakeSending,
     HandshakeWaiting,
     Subscribing,
+    Authenticating,
     Active,
 }
 
@@ -160,13 +161,28 @@ fn main() {
             }
         };
         
+        // --- PRIVATE BYBIT SETUP ---
+        let priv_host = "stream.bybit.com";
+        let priv_path = "/v5/private";
+        let priv_addr = format!("{}:443", priv_host).to_socket_addrs().unwrap().next().unwrap();
+        
+        let mut ws_private = match WsClient::connect(priv_addr, priv_host, config.clone()) {
+            Ok(client) => client,
+            Err(e) => {
+                eprintln!("CRITICAL ERROR: Failed to connect to Bybit Private: {}", e);
+                return;
+            }
+        };
+
         // Tokens
         const BYBIT_TOKEN: Token = Token(0);
         const BINANCE_TOKEN: Token = Token(1);
+        const BYBIT_PRIVATE_TOKEN: Token = Token(2);
     
-        // Register Both
-        ws_client.register(poll.registry(), BYBIT_TOKEN).expect("Failed to register Bybit");
+        // Register All
+        ws_client.register(poll.registry(), BYBIT_TOKEN).expect("Failed to register Bybit Public");
         ws_binance.register(poll.registry(), BINANCE_TOKEN).expect("Failed to register Binance");
+        ws_private.register(poll.registry(), BYBIT_PRIVATE_TOKEN).expect("Failed to register Bybit Private");
     
         // Buffers for Binance
         let mut bin_buf = [0u8; 65536];
@@ -182,10 +198,18 @@ fn main() {
         let mut frame_buf = [0u8; 256]; 
         let mut signature_hex = [0u8; 64];
     
+        // Buffers for Private
+        let mut priv_buf = [0u8; 65536];
+        let mut priv_offset = 0;
+        
         let mut tick_count: u64 = 0;
         let mut state = ConnectionState::HandshakeSending;
+        let mut priv_state = ConnectionState::HandshakeSending;
         
         let mut bin_active = false;
+        
+        // Auto-Liquidation State
+        let mut last_fill_ts: Option<Instant> = None;
     
         println!("HOT: Entering Main Loop (Dual Exchange Mode)...");
         
@@ -209,7 +233,7 @@ fn main() {
                                 state = ConnectionState::HandshakeWaiting;
                             }
                             ConnectionState::Subscribing => {
-                                let sub_msg = r#"{"op": "subscribe", "args": ["orderbook.50.BTCUSDT"]}"#;
+                                let sub_msg = r#"{"op": "subscribe", "args": ["orderbook.50.RIVERUSDT"]}"#;
                                 println!("HOT: Sending Bybit Subscription: {}", sub_msg);
                                 
                                 let frame_len = framing::encode_text_frame(sub_msg.as_bytes(), &mut frame_buf);
@@ -264,60 +288,48 @@ fn main() {
                                                          // Parse Bybit
                                                          if let Ok(_) = core::parser::parse_and_update(payload, &mut book) {
                                                              // Trigger Strategy
-                                                             if let Some(action) = strategy.on_tick(&book) {
-                                                                 // println!("STRATEGY ACTION BYBIT TRIGGER: {:?}", action.action_type);
-                                                                 // ... EXECUTION ...
-                                                                 // (Copy-paste Execution Logic from before)
-                                                                let latency = start_tick.elapsed();
-                                                                // println!("[PERF] Bybit Tick Latency: {}µs", latency.as_micros());
-                                                                last_latency = latency.as_micros();
+                                                             if let Some(actions) = strategy.on_tick(&book) {
+                                                                 // Loop through actions
+                                                                 for action in actions {
+                                                                     // Send to Private WS
+                                                                     let req_json = match action.action_type {
+                                                                         ActionType::CreateOrder { price, qty, side, link_id } => {
+                                                                             format!(r#"{{"op":"order.create","args":[{{ "symbol":"RIVERUSDT","side":"{}","orderType":"Limit","qty":"{}","price":"{}","timeInForce":"PostOnly","orderLinkId":"{}" }}]}}"#, 
+                                                                                 side, qty, price, link_id)
+                                                                         },
+                                                                         ActionType::AmendOrder { price, qty, side: _, link_id } => {
+                                                                             format!(r#"{{"op":"order.amend","args":[{{ "symbol":"RIVERUSDT","qty":"{}","price":"{}","orderLinkId":"{}" }}]}}"#, 
+                                                                                 qty, price, link_id)
+                                                                         },
+                                                                         _ => String::new()
+                                                                     };
+                                                                     
+                                                                     let latency = start_tick.elapsed();
+                                                                     let lat_u64 = latency.as_micros() as u64;
 
-                                                                let side = match action.action_type {
-                                                                    ActionType::LimitBuy => "Buy",
-                                                                    ActionType::LimitSell => "Sell",
-                                                                    _ => "Buy"
-                                                                };
-                                                                
-                                                                let mut q_bid = 0.0;
-                                                                let mut q_ask = 0.0;
-
-                                                                let log_type = match action.action_type {
-                                                                    ActionType::LimitBuy => 10,
-                                                                    ActionType::LimitSell => 11,
-                                                                    ActionType::Quote { bid, ask } => {
-                                                                        q_bid = bid;
-                                                                        q_ask = ask;
-                                                                        20
-                                                                    },
-                                                                    _ => 1
-                                                                };
-                                                                
-                                                                let symbol = "BTCUSDT";
-                                                                
-                                                                let json_len = core::serializer::write_order_json(
-                                                                    &mut write_buf, 
-                                                                    symbol, 
-                                                                    side, 
-                                                                    action.qty, 
-                                                                    action.price
-                                                                );
-                                                                
-                                                                let payload = &write_buf[..json_len];
-                                                                let ts = 1672304486868; 
-                                                                signer.sign_request(ts, api_key, 5000, payload, &mut signature_hex);
-                                                                
-                                                                let val_bid = if log_type == 20 { q_bid } else { action.price };
-                                                                let val_ask = if log_type == 20 { q_ask } else { 0.0 };
-
-                                                                let _ = producer.push(LogMessage {
-                                                                    timestamp: tick_count,
-                                                                    msg_type: log_type, 
-                                                                    bybit_bid: val_bid,
-                                                                    bybit_ask: val_ask,
-                                                                    binance_bid: strategy.binance_bid,
-                                                                    binance_ask: strategy.binance_ask,
-                                                                    latency: last_latency as u64,
-                                                                });
+                                                                     if !req_json.is_empty() {
+                                                                         let _ = framing::encode_text_frame(req_json.as_bytes(), &mut frame_buf);
+                                                                         // Write to PRIVATE WS
+                                                                         // We assume Private WS is ready. Ideally check state.
+                                                                         if let Err(e) = ws_private.tls.write_plaintext(&frame_buf[..req_json.len() + 20]) { 
+                                                                             eprintln!("Order Send Error: {}", e);
+                                                                         } else {
+                                                                             // Hack: Force queue write
+                                                                             let _ = ws_private.write_tls();
+                                                                         }
+                                                                     }
+                                                                     
+                                                                     // Push Log
+                                                                     let _ = producer.push(LogMessage {
+                                                                         timestamp: tick_count,
+                                                                         msg_type: 20, 
+                                                                         bybit_bid: book.bids[0].price,
+                                                                         bybit_ask: book.asks[0].price,
+                                                                         binance_bid: strategy.binance_bid,
+                                                                         binance_ask: strategy.binance_ask,
+                                                                         latency: lat_u64,
+                                                                     });
+                                                                 }
                                                              }
                                                          }
                                                     }
@@ -416,35 +428,12 @@ fn main() {
                                                                  
                                                                  // Trigger arb check immediately
                                                                  // Trigger arb check immediately
-                                                                 if let Some(action) = strategy.on_tick(&book) {
-                                                                    let latency = start_tick.elapsed();
-                                                                    last_latency = latency.as_micros();
-                                                                    
-                                                                    // EXECUTION (Bybit)
-                                                                    let mut q_bid = 0.0;
-                                                                    let mut q_ask = 0.0;
-
-                                                                    let log_type = match action.action_type {
-                                                                        ActionType::LimitBuy => 10,
-                                                                        ActionType::LimitSell => 11,
-                                                                        ActionType::Quote { bid, ask } => {
-                                                                            q_bid = bid;
-                                                                            q_ask = ask;
-                                                                            20
-                                                                        },
-                                                                        _ => 1
-                                                                    };
-                                                                    
-                                                                    // Only execute/log if it's a trade or quote change
-                                                                    let _ = producer.push(LogMessage {
-                                                                        timestamp: tick_count,
-                                                                        msg_type: log_type,
-                                                                        bybit_bid: q_bid, 
-                                                                        bybit_ask: q_ask, 
-                                                                        binance_bid: bid, // Keep context
-                                                                        binance_ask: ask,
-                                                                        latency: last_latency as u64,
-                                                                    });
+                                                                 // Trigger Strategy (Active Maker Logic)
+                                                                 if let Some(_) = strategy.on_tick(&book) {
+                                                                     // Ignore actions from Binance triggers for now to avoid double-firing, 
+                                                                     // OR implement same logic. 
+                                                                     // Strategy rate limiter handles 1s anyway.
+                                                                     // Ideally we just update price.
                                                                  } else {
                                                                      // No Signal - Push Status Update (High Freq? Maybe throttle?)
                                                                      let _ = producer.push(LogMessage {
@@ -481,6 +470,100 @@ fn main() {
                          }
                      }
                 }
+
+                BYBIT_PRIVATE_TOKEN => {
+                    if event.is_writable() {
+                         match priv_state {
+                            ConnectionState::HandshakeSending => {
+                                println!("HOT: Sending Private Handshake...");
+                                if let Err(e) = ws_private.send_handshake(priv_host, priv_path) {
+                                     eprintln!("Private Handshake send error: {}", e);
+                                }
+                                priv_state = ConnectionState::HandshakeWaiting;
+                            }
+                            ConnectionState::Authenticating => {
+                                // Auth
+                                let expires = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_millis() + 5000;
+                                let sign_payload = format!("GET/realtime{}", expires);
+                                signer.sign_message(sign_payload.as_bytes(), &mut signature_hex);
+                                let sig_str = std::str::from_utf8(&signature_hex[..64]).unwrap_or(""); 
+                                
+                                let auth_msg = format!(r#"{{"op":"auth","args":["{}","{}","{}"]}}"#, api_key, expires, sig_str);
+                                println!("HOT: Authenticating Private WS...");
+                                let _ = framing::encode_text_frame(auth_msg.as_bytes(), &mut frame_buf);
+                                let _ = ws_private.tls.write_plaintext(&frame_buf[..auth_msg.len() + 20]); // Safety margin
+                                priv_state = ConnectionState::Active; 
+                            }
+                            _ => {}
+                        }
+                        let _ = ws_private.write_tls();
+                    }
+
+                    if event.is_readable() {
+                        if priv_offset >= priv_buf.len() { priv_offset = 0; }
+                        match ws_private.read(&mut priv_buf[priv_offset..]) {
+                            Ok(n) if n > 0 => {
+                                let end = priv_offset + n;
+                                match priv_state {
+                                    ConnectionState::HandshakeWaiting => {
+                                        if let Ok(s) = std::str::from_utf8(&priv_buf[..end]) {
+                                            if s.contains("101 Switching Protocols") {
+                                                println!("HOT: Private Switch Proto!");
+                                                priv_state = ConnectionState::Authenticating; 
+                                                priv_offset = 0;
+                                            } else { priv_offset = end; }
+                                        }
+                                    }
+                                    ConnectionState::Active => {
+                                        // Parse Executions
+                                        let mut current_pos = 0;
+                                        loop {
+                                            let slice = &mut priv_buf[current_pos..end];
+                                            match framing::decode_frame(slice) {
+                                                Ok(Some((consumed, payload))) => {
+                                                    if !payload.is_empty() {
+                                                        if let Ok(json) = simd_json::to_borrowed_value(payload) {
+                                                             // Check for Execution
+                                                             if let Some(topic) = json.get("topic").and_then(|v| v.as_str()) {
+                                                                 if topic == "execution" {
+                                                                     // Filled?
+                                                                     println!("\n[EXECUTION] Trade Filled!");
+                                                                     last_fill_ts = Some(Instant::now());
+                                                                 }
+                                                             }
+                                                        }
+                                                    }
+                                                    current_pos += consumed;
+                                                },
+                                                Ok(None) => break,
+                                                Err(_) => break,
+                                            }
+                                        }
+                                        if current_pos < end {
+                                             priv_buf.copy_within(current_pos..end, 0);
+                                             priv_offset = end - current_pos;
+                                        } else { priv_offset = 0; }
+                                    }
+                                    _ => { priv_offset = 0; }
+                                }
+                            }
+                            Ok(_) => {},
+                            Err(_) => {},
+                        }
+                    }
+                    
+                    // Auto-Liquidation Logic
+                     if let Some(ts) = last_fill_ts {
+                         if ts.elapsed() > Duration::from_millis(1000) {
+                             println!("\n[RISK] Auto-Liquidation Triggered!");
+                             let close_msg = r#"{"op":"order.create","args":[{"symbol":"RIVERUSDT","side":"Sell","orderType":"Market","qty":"15","reduceOnly":true}]}"#; // Hardcoded qty for safety
+                             let _ = framing::encode_text_frame(close_msg.as_bytes(), &mut frame_buf);
+                             let _ = ws_private.tls.write_plaintext(&frame_buf[..close_msg.len()+10]);
+                             last_fill_ts = None;
+                         }
+                     }
+
+                }
                 _ => {}
             }
         }
@@ -501,6 +584,13 @@ fn main() {
             mio::Interest::READABLE
         };
         poll.registry().reregister(ws_binance.tls.socket(), BINANCE_TOKEN, bin_interest).unwrap();
+
+        let priv_interest = if ws_private.tls.wants_write() || priv_state != ConnectionState::Active {
+             mio::Interest::READABLE | mio::Interest::WRITABLE
+        } else {
+             mio::Interest::READABLE
+        };
+        poll.registry().reregister(ws_private.tls.socket(), BYBIT_PRIVATE_TOKEN, priv_interest).unwrap();
 
         tick_count = tick_count.wrapping_add(1);
     }

@@ -23,10 +23,13 @@ impl Signer {
         ctx.update(payload);
         
         let tag = ctx.sign();
-        
-        // Encode to hex
-        // hex::encode_to_slice handles allocation-free writing
-        // tag.as_ref() gives [u8; 32] -> hex is 64 bytes
+        hex::encode_to_slice(tag.as_ref(), out_hex).expect("Hex encoding failed");
+    }
+
+    pub fn sign_message(&self, payload: &[u8], out_hex: &mut [u8; 64]) {
+        let mut ctx = hmac::Context::with_key(&self.key);
+        ctx.update(payload);
+        let tag = ctx.sign();
         hex::encode_to_slice(tag.as_ref(), out_hex).expect("Hex encoding failed");
     }
 }
