@@ -4,6 +4,7 @@ use crate::core::orderbook::L2OrderBook;
 pub enum ActionType {
     LimitBuy,
     LimitSell,
+    Quote { bid: f64, ask: f64 },
     CancelAll,
 }
 
@@ -75,23 +76,26 @@ impl MarketMaker {
                  bybit_bid.price, bybit_ask.price, self.binance_bid, self.binance_ask, buy_arb_spread, sell_arb_spread);
         }
 
-        if buy_arb_spread > self.target_spread {
-            // println!("[SIMULATION] ARB SIGNAL: BUY! Diff: {:.2}", buy_arb_spread);
-            return Some(Action {
-                action_type: ActionType::LimitBuy,
-                price: bybit_ask.price, // Markerable Limit (Taket)
-                qty: 0.001,
-            });
-        }
+        // Leader Signal Logic (Skewing)
+        let binance_mid = (self.binance_bid + self.binance_ask) / 2.0;
+        let bybit_mid = (bybit_bid.price + bybit_ask.price) / 2.0;
+        let signal = binance_mid - bybit_mid;
 
-        if sell_arb_spread > self.target_spread {
-            // println!("[SIMULATION] ARB SIGNAL: SELL! Diff: {:.2}", sell_arb_spread);
-            return Some(Action {
-                action_type: ActionType::LimitSell,
-                price: bybit_bid.price, // Marketable Limit (Taker)
-                qty: 0.001,
-            });
+        // If Signal is significant, we skew our quotes.
+        // For simulation, we return a Quote action.
+        if signal.abs() > self.target_spread {
+             return Some(Action {
+                 action_type: ActionType::Quote { 
+                     bid: bybit_bid.price + signal, 
+                     ask: bybit_ask.price + signal 
+                 },
+                 price: 0.0, 
+                 qty: 0.001,
+             });
         }
+        
+        // Disable old Taker Logic for now to focus on quoting
+        // if buy_arb_spread > self.target_spread { ... }
 
         None
     }

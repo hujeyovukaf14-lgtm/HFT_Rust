@@ -29,7 +29,11 @@ use simd_json::prelude::*;
 struct LogMessage {
     timestamp: u64,
     msg_type: u8, 
-    value: f64, 
+    bybit_bid: f64,
+    bybit_ask: f64,
+    binance_bid: f64,
+    binance_ask: f64,
+    latency: u64,
 }
 
 #[derive(PartialEq)]
@@ -72,12 +76,25 @@ fn main() {
         println!("COLD Thread running.");
         loop {
              while let Ok(msg) = consumer.pop() {
-                 if msg.msg_type == 10 { // Buy
-                     // println!("[SIMULATION] !!! SIGNAL TRIGGERED: BUY at {:.2} !!!", msg.value);
-                 } else if msg.msg_type == 11 { // Sell
-                     // println!("[SIMULATION] !!! SIGNAL TRIGGERED: SELL at {:.2} !!!", msg.value);
-                 } else if msg.msg_type == 1 { // Generic (fallback)
-                     // println!("[ACTION] TS:{} Val:{:.4}", msg.timestamp, msg.value);
+                 if msg.msg_type == 1 || msg.msg_type == 20 { // Status Update OR Quote Adjustment
+                     // Calculate spread for display
+                     let spread_diff = (msg.binance_bid - msg.bybit_ask).max(msg.bybit_bid - msg.binance_ask);
+                     
+                     // Marker for action
+                     let action_marker = if msg.msg_type == 20 { "[QUOTE]" } else { "       " };
+
+                     print!("\rBybit: {:.2}/{:.2} | Binance: {:.2}/{:.2} | Diff: {:.2} | Latency: {}us {}   ", 
+                         msg.bybit_bid, msg.bybit_ask, 
+                         msg.binance_bid, msg.binance_ask, 
+                         spread_diff,
+                         msg.latency,
+                         action_marker
+                     );
+                     let _ = std::io::stdout().flush();
+                 } else if msg.msg_type == 10 { // Buy Signal
+                     println!("\n[SIMULATION] !!! SIGNAL TRIGGERED: BUY (Skewed Quote) !!!");
+                 } else if msg.msg_type == 11 { // Sell Signal
+                     println!("\n[SIMULATION] !!! SIGNAL TRIGGERED: SELL (Skewed Quote) !!!");
                  }
              }
              thread::sleep(Duration::from_millis(1));
@@ -261,9 +278,17 @@ fn main() {
                                                                     _ => "Buy"
                                                                 };
                                                                 
+                                                                let mut q_bid = 0.0;
+                                                                let mut q_ask = 0.0;
+
                                                                 let log_type = match action.action_type {
                                                                     ActionType::LimitBuy => 10,
                                                                     ActionType::LimitSell => 11,
+                                                                    ActionType::Quote { bid, ask } => {
+                                                                        q_bid = bid;
+                                                                        q_ask = ask;
+                                                                        20
+                                                                    },
                                                                     _ => 1
                                                                 };
                                                                 
@@ -281,22 +306,35 @@ fn main() {
                                                                 let ts = 1672304486868; 
                                                                 signer.sign_request(ts, api_key, 5000, payload, &mut signature_hex);
                                                                 
+                                                                let val_bid = if log_type == 20 { q_bid } else { action.price };
+                                                                let val_ask = if log_type == 20 { q_ask } else { 0.0 };
+
                                                                 let _ = producer.push(LogMessage {
                                                                     timestamp: tick_count,
                                                                     msg_type: log_type, 
-                                                                    value: action.price
+                                                                    bybit_bid: val_bid,
+                                                                    bybit_ask: val_ask,
+                                                                    binance_bid: strategy.binance_bid,
+                                                                    binance_ask: strategy.binance_ask,
+                                                                    latency: last_latency as u64,
                                                                 });
                                                              }
                                                          }
                                                     }
-                                                     print!("\rBybit: {:.2}/{:.2} | Binance: {:.2}/{:.2} | Diff: {:.2} | Latency: {}us     ", 
-                                                         book.bids[0].price, book.asks[0].price, 
-                                                         strategy.binance_bid, strategy.binance_ask, 
-                                                         (strategy.binance_bid - book.asks[0].price).max(book.bids[0].price - strategy.binance_ask),
-                                                         last_latency
-                                                     );
-                                                     let _ = std::io::stdout().flush();
-                                                     current_pos += consumed;
+
+                                                    // Throttled Status Update (every 100 ticks)
+                                                    if tick_count % 100 == 0 {
+                                                         let _ = producer.push(LogMessage {
+                                                             timestamp: tick_count,
+                                                             msg_type: 1, // Status
+                                                             bybit_bid: book.bids[0].price,
+                                                             bybit_ask: book.asks[0].price,
+                                                             binance_bid: strategy.binance_bid,
+                                                             binance_ask: strategy.binance_ask,
+                                                             latency: last_latency as u64,
+                                                         });
+                                                    }
+                                                    current_pos += consumed;
                                                 },
                                                 Ok(None) => break,
                                                 Err(_) => break, // Drop invalid
@@ -377,44 +415,48 @@ fn main() {
                                                                  strategy.update_binance_price(bid, ask);
                                                                  
                                                                  // Trigger arb check immediately
+                                                                 // Trigger arb check immediately
                                                                  if let Some(action) = strategy.on_tick(&book) {
                                                                     let latency = start_tick.elapsed();
                                                                     last_latency = latency.as_micros();
                                                                     
                                                                     // EXECUTION (Bybit)
-                                                                    let side = match action.action_type {
-                                                                        ActionType::LimitBuy => "Buy",
-                                                                        ActionType::LimitSell => "Sell",
-                                                                        _ => "Buy"
-                                                                    };
-                                                                    
+                                                                    let mut q_bid = 0.0;
+                                                                    let mut q_ask = 0.0;
+
                                                                     let log_type = match action.action_type {
                                                                         ActionType::LimitBuy => 10,
                                                                         ActionType::LimitSell => 11,
+                                                                        ActionType::Quote { bid, ask } => {
+                                                                            q_bid = bid;
+                                                                            q_ask = ask;
+                                                                            20
+                                                                        },
                                                                         _ => 1
                                                                     };
                                                                     
-                                                                    let symbol = "BTCUSDT"; 
-                                                                    let json_len = core::serializer::write_order_json(
-                                                                        &mut write_buf, symbol, side, action.qty, action.price
-                                                                    );
-                                                                    let payload = &write_buf[..json_len];
-                                                                    let ts = 1672304486868; 
-                                                                    signer.sign_request(ts, api_key, 5000, payload, &mut signature_hex);
-                                                                    
+                                                                    // Only execute/log if it's a trade or quote change
                                                                     let _ = producer.push(LogMessage {
                                                                         timestamp: tick_count,
-                                                                        msg_type: log_type, 
-                                                                        value: action.price
+                                                                        msg_type: log_type,
+                                                                        bybit_bid: q_bid, 
+                                                                        bybit_ask: q_ask, 
+                                                                        binance_bid: bid, // Keep context
+                                                                        binance_ask: ask,
+                                                                        latency: last_latency as u64,
                                                                     });
+                                                                 } else {
+                                                                     // No Signal - Push Status Update (High Freq? Maybe throttle?)
+                                                                     let _ = producer.push(LogMessage {
+                                                                         timestamp: tick_count,
+                                                                         msg_type: 1, // Status
+                                                                         bybit_bid: book.bids[0].price,
+                                                                         bybit_ask: book.asks[0].price,
+                                                                         binance_bid: bid, 
+                                                                         binance_ask: ask,
+                                                                         latency: last_latency as u64,
+                                                                     });
                                                                  }
-                                                                 print!("\rBybit: {:.2}/{:.2} | Binance: {:.2}/{:.2} | Diff: {:.2} | Latency: {}us     ", 
-                                                                     book.bids[0].price, book.asks[0].price, 
-                                                                     bid, ask, 
-                                                                     (bid - book.asks[0].price).max(book.bids[0].price - ask),
-                                                                     last_latency
-                                                                 );
-                                                                 let _ = std::io::stdout().flush();
                                                              }
                                                          }
                                                      }
