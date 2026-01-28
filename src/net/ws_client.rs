@@ -40,8 +40,8 @@ impl WsClient {
         })
     }
 
-    pub fn register(&mut self, registry: &Registry) -> io::Result<()> {
-         self.tls.register(registry, WS_TOKEN)
+    pub fn register(&mut self, registry: &Registry, token: Token) -> io::Result<()> {
+         self.tls.register(registry, token)
     }
 
     pub fn send_handshake(&mut self, host: &str, path: &str) -> io::Result<()> {
