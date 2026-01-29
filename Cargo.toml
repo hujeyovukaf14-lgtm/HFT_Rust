@@ -17,3 +17,6 @@ ring = "0.17"
 ryu = "1.0" 
 itoa = "1.0"
 hex = "0.4"
+dotenv = "0.15"
+ureq = { version = "2.10", features = ["json"] }
+

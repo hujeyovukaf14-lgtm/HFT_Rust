@@ -78,14 +78,21 @@ pub fn encode_text_frame(src_payload: &[u8], dst_buf: &mut [u8]) -> usize {
     offset += 1;
 
     // 2. Byte 1: Mask (0x80) | Length
-    // For this MVP we assume payload < 125 bytes for subscription messages.
-    // If > 125, we need extended logic (not implemented for simplicity here).
+    // Extended length for payloads >= 126 bytes
     if payload_len < 126 {
         dst_buf[offset] = 0x80 | (payload_len as u8);
         offset += 1;
+    } else if payload_len <= 65535 {
+        // Extended payload length (2 bytes, big-endian)
+        dst_buf[offset] = 0x80 | 126;
+        offset += 1;
+        let len_bytes = (payload_len as u16).to_be_bytes();
+        dst_buf[offset] = len_bytes[0];
+        dst_buf[offset + 1] = len_bytes[1];
+        offset += 2;
     } else {
-        // Panic or handle error in real code. For now assuming short JSON.
-        // eprintln!("Frame too large for simple encoder");
+        // Payload too large for our use case
+        eprintln!("Frame too large for encoder: {} bytes", payload_len);
         return 0;
     }
 

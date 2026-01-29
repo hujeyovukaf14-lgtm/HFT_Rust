@@ -1,0 +1,4 @@
+!!! CancelAll HTTP FAILED: 10004 - Error sign, please check your signature generation algorithm: origin_string[1769642655185HrB4RaJ8X2Fg8qY7hx20000]
+WARNING: Failed to cancel orders on startup: Bybit error: 10004 - Error sign, please check your signature generation algorithm: origin_string[1769642655185HrB4RaJ8X2Fg8qY7hx20000]
+Continuing anyway...
+RISK CRITICAL: Tick processing took 6545us (Limit: 5000us)

@@ -1,0 +1,930 @@
+Initializing HFT Engine for AWS c8i.large (Cross-Platform Ready)...
+Mode: Windows (Dev). Latency optimizations relaxed.
+========================================
+>>> Canceling ALL orders via HTTP REST...
+>>> CancelAll HTTP Response: {"retCode":10004,"retMsg":"Error sign, please check your signature generation algorithm: origin_string[1769642655185HrB4RaJ8X2Fg8qY7hx20000]","result":{},"retExtInfo":{},"time":1769642656644}
+COLD Thread pinned to Core ID: CoreId { id: 1 }
+COLD Thread running.
+HOT Thread pinned to Core ID: CoreId { id: 0 }
+HOT Thread running.
+HOT: Loading TLS...
+HOT: Entering Main Loop (Dual Exchange Mode)...
+HOT: Sending Bybit Handshake...
+DEBUG: write_tls flushed 243 bytes. Wants write: false
+HOT: Sending Binance Handshake...
+DEBUG: write_tls flushed 246 bytes. Wants write: false
+HOT: Sending Private Handshake...
+DEBUG: write_tls flushed 243 bytes. Wants write: false
+HOT: Sending Trade Handshake...
+DEBUG: write_tls flushed 243 bytes. Wants write: false
+DEBUG: write_tls flushed 6 bytes. Wants write: false
+DEBUG: write_tls flushed 6 bytes. Wants write: false
+DEBUG: write_tls flushed 6 bytes. Wants write: false
+DEBUG: write_tls flushed 251 bytes. Wants write: false
+DEBUG: write_tls flushed 243 bytes. Wants write: false
+DEBUG: write_tls flushed 245 bytes. Wants write: false
+HOT: Trade Switch Proto!
+HOT: Authenticating Trade WS...
+DEBUG: write_tls flushed 156 bytes. Wants write: false
+HOT: Trade RAW: {"retCode":0,"retMsg":"OK","op":"auth","connId":"d5eahte95861re9mn77g-4tmbg"}
+========================================
+HOT: Trade WS AUTHENTICATED!
+========================================
+DEBUG: write_tls flushed 6 bytes. Wants write: false
+DEBUG: write_tls flushed 259 bytes. Wants write: false
+HOT: Bybit Upgraded! Ready to Subscribe.
+HOT: Sending Bybit Subscription: {"op": "subscribe", "args": ["orderbook.50.RIVERUSDT"]}
+DEBUG: write_tls flushed 83 bytes. Wants write: false
+HOT: Private WS Read 381 bytes, state=HandshakeWaiting
+HOT: Private Switch Proto!
+HOT: Authenticating Private WS...
+DEBUG: write_tls flushed 156 bytes. Wants write: false
+HOT: Binance Upgraded!
+HOT: Private WS Read 83 bytes, state=Active
+HOT: Private Active entered, end=83
+HOT: decode_frame result: Ok(Some((83, 81)))
+HOT: Decoded frame, consumed=83, payload_len=81
+HOT: Private RAW: {"success":true,"ret_msg":"","op":"auth","conn_id":"d2k4lmb84lk8r2qenlcg-36hbux"}
+HOT: Private WS AUTHENTICATED!
+HOT: decode_frame result: Ok(None)
+HOT: Sending Private Subscription: {"op": "subscribe", "args": ["execution","position"]}
+DEBUG: write_tls flushed 81 bytes. Wants write: false
+STRATEGY: Generating orders! Elapsed: 1108ms
+HOT: [PERF] CreateOrder generated in 110us
+>>> ORDER OUT: {"reqId":"b-1769642661703-1769642660812","header":{"X-BAPI-TIMESTAMP":"1769642660812","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Buy","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.080","timeInForce":"PostOnly","orderLinkId":"b-1769642661703"}]}
+DEBUG: write_tls flushed 353 bytes. Wants write: false
+HOT: [PERF] CreateOrder generated in 110us
+>>> ORDER OUT: {"reqId":"s-1769642661703-1769642660812","header":{"X-BAPI-TIMESTAMP":"1769642660812","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Sell","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.380","timeInForce":"PostOnly","orderLinkId":"s-1769642661703"}]}
+DEBUG: write_tls flushed 354 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"b-1769642661703-1769642660812","retCode":10002,"retMsg":"invalid request, please check your server timestamp or recv_window param: req_timestamp[1769642660812],server_timestamp[1769642657987],recv_window[20000]","op":"order.create","data":{},"retExtInfo":{},"header":{"Traceid":"4b5694fbc0a197a21baf4251c2cba1e9","Timenow":"1769642657988"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Time Sync Initialized! Offset: -5539 ms
+HOT: Trade Error Code: 10002, Msg: invalid request, please check your server timestamp or recv_window param: req_timestamp[1769642660812],server_timestamp[1769642657987],recv_window[20000]
+HOT: Private WS Read 88 bytes, state=Active
+HOT: Private Active entered, end=88
+HOT: decode_frame result: Ok(Some((88, 86)))
+HOT: Decoded frame, consumed=88, payload_len=86
+HOT: Private RAW: {"success":true,"ret_msg":"","op":"subscribe","conn_id":"d2k4lmb84lk8r2qenlcg-36hbux"}
+HOT: decode_frame result: Ok(None)
+HOT: Trade RAW: {"reqId":"s-1769642661703-1769642660812","retCode":10002,"retMsg":"invalid request, please check your server timestamp or recv_window param: req_timestamp[1769642660812],server_timestamp[1769642657988],recv_window[20000]","op":"order.create","data":{},"retExtInfo":{},"header":{"Traceid":"2f19a60ae5444a5d0f6a0b1a84a2ee34","Timenow":"1769642657988"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 10002, Msg: invalid request, please check your server timestamp or recv_window param: req_timestamp[1769642660812],server_timestamp[1769642657988],recv_window[20000]
+STRATEGY: Generating orders! Elapsed: 1009ms
+HOT: [PERF] AmendOrder generated in 374us
+>>> ORDER OUT: {"reqId":"amend-b-1769642661703-1769642658283","header":{"X-BAPI-TIMESTAMP":"1769642658283","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.120","orderLinkId":"b-1769642661703"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 374us
+>>> ORDER OUT: {"reqId":"amend-s-1769642661703-1769642658283","header":{"X-BAPI-TIMESTAMP":"1769642658283","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.420","orderLinkId":"s-1769642661703"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642661703-1769642658283","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642659005","Traceid":"642896969e60ca402f53d2920036225c","Timenow":"1769642659005"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Buy state.
+HOT: Trade RAW: {"reqId":"amend-s-1769642661703-1769642658283","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"Timenow":"1769642659005","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642659005","Traceid":"3888e776ebc5279436aed71a6679eef7"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Sell state.
+STRATEGY: Generating orders! Elapsed: 1019ms
+HOT: [PERF] CreateOrder generated in 369us
+>>> ORDER OUT: {"reqId":"b-1769642664043-1769642659303","header":{"X-BAPI-TIMESTAMP":"1769642659303","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Buy","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.110","timeInForce":"PostOnly","orderLinkId":"b-1769642664043"}]}
+DEBUG: write_tls flushed 353 bytes. Wants write: false
+HOT: [PERF] CreateOrder generated in 369us
+>>> ORDER OUT: {"reqId":"s-1769642664043-1769642659303","header":{"X-BAPI-TIMESTAMP":"1769642659303","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Sell","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.400","timeInForce":"PostOnly","orderLinkId":"s-1769642664043"}]}
+DEBUG: write_tls flushed 354 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"s-1769642664043-1769642659303","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642660023","Traceid":"2ecd97ab7e0c289163b63f699079d489","Timenow":"1769642660024"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+HOT: Trade RAW: {"reqId":"b-1769642664043-1769642659303","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"Timenow":"1769642660024","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642660024","Traceid":"75f1255d610486094c1f7f1b61e3ab2e"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+STRATEGY: Generating orders! Elapsed: 1003ms
+STRATEGY: Generating orders! Elapsed: 1020ms
+HOT: [PERF] AmendOrder generated in 379us
+>>> ORDER OUT: {"reqId":"amend-b-1769642664043-1769642661328","header":{"X-BAPI-TIMESTAMP":"1769642661328","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.130","orderLinkId":"b-1769642664043"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 379us
+>>> ORDER OUT: {"reqId":"amend-s-1769642664043-1769642661328","header":{"X-BAPI-TIMESTAMP":"1769642661328","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.430","orderLinkId":"s-1769642664043"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642664043-1769642661328","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642662043","Traceid":"48ab3722788d8e6146ed137bb17f44e4","Timenow":"1769642662043"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Buy state.
+HOT: Trade RAW: {"reqId":"amend-s-1769642664043-1769642661328","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642662043","Traceid":"2081d6b58a426b3d1e50e761bac8cf81","Timenow":"1769642662044"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Sell state.
+STRATEGY: Generating orders! Elapsed: 1015ms
+HOT: [PERF] CreateOrder generated in 371us
+>>> ORDER OUT: {"reqId":"b-1769642667081-1769642662344","header":{"X-BAPI-TIMESTAMP":"1769642662344","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Buy","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.150","timeInForce":"PostOnly","orderLinkId":"b-1769642667081"}]}
+DEBUG: write_tls flushed 353 bytes. Wants write: false
+HOT: [PERF] CreateOrder generated in 371us
+>>> ORDER OUT: {"reqId":"s-1769642667085-1769642662344","header":{"X-BAPI-TIMESTAMP":"1769642662344","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Sell","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.440","timeInForce":"PostOnly","orderLinkId":"s-1769642667085"}]}
+DEBUG: write_tls flushed 354 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"b-1769642667081-1769642662344","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642663059","Traceid":"23ed616e9988911b01d5b144e007d2e1","Timenow":"1769642663060","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+HOT: Trade RAW: {"reqId":"s-1769642667085-1769642662344","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"Timenow":"1769642663060","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642663059","Traceid":"0ed777cbac93a8111f392198f2e0a9d7"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+STRATEGY: Generating orders! Elapsed: 1098ms
+STRATEGY: Generating orders! Elapsed: 1040ms
+STRATEGY: Generating orders! Elapsed: 1020ms
+HOT: [PERF] AmendOrder generated in 377us
+>>> ORDER OUT: {"reqId":"amend-b-1769642667081-1769642665504","header":{"X-BAPI-TIMESTAMP":"1769642665504","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.140","orderLinkId":"b-1769642667081"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 377us
+>>> ORDER OUT: {"reqId":"amend-s-1769642667085-1769642665505","header":{"X-BAPI-TIMESTAMP":"1769642665505","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.430","orderLinkId":"s-1769642667085"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642667081-1769642665504","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642666220","Traceid":"5e58f175e4f53b010aa4347715c84bc3","Timenow":"1769642666220"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Buy state.
+HOT: Trade RAW: {"reqId":"amend-s-1769642667085-1769642665505","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642666220","Traceid":"1abeb3c9e05392c80f3e73100332e8ab","Timenow":"1769642666220","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Sell state.
+STRATEGY: Generating orders! Elapsed: 1018ms
+HOT: [PERF] CreateOrder generated in 387us
+>>> ORDER OUT: {"reqId":"b-1769642671258-1769642666523","header":{"X-BAPI-TIMESTAMP":"1769642666523","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Buy","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.130","timeInForce":"PostOnly","orderLinkId":"b-1769642671258"}]}
+DEBUG: write_tls flushed 353 bytes. Wants write: false
+HOT: [PERF] CreateOrder generated in 387us
+>>> ORDER OUT: {"reqId":"s-1769642671258-1769642666523","header":{"X-BAPI-TIMESTAMP":"1769642666523","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Sell","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.430","timeInForce":"PostOnly","orderLinkId":"s-1769642671258"}]}
+DEBUG: write_tls flushed 354 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"b-1769642671258-1769642666523","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642667238","Traceid":"5864217b5ca2b8a372cd30344ae508ca","Timenow":"1769642667239","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+HOT: Trade RAW: {"reqId":"s-1769642671258-1769642666523","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642667238","Traceid":"74d131dde9b420887c49ed665c1f62d3","Timenow":"1769642667239"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+STRATEGY: Generating orders! Elapsed: 1005ms
+HOT: [PERF] AmendOrder generated in 421us
+>>> ORDER OUT: {"reqId":"amend-b-1769642671258-1769642667529","header":{"X-BAPI-TIMESTAMP":"1769642667529","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.120","orderLinkId":"b-1769642671258"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 421us
+>>> ORDER OUT: {"reqId":"amend-s-1769642671258-1769642667529","header":{"X-BAPI-TIMESTAMP":"1769642667529","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.420","orderLinkId":"s-1769642671258"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642671258-1769642667529","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642668244","Traceid":"417c4419f91b52f9657cbf462e28e6c1","Timenow":"1769642668245","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Buy state.
+HOT: Trade RAW: {"reqId":"amend-s-1769642671258-1769642667529","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642668244","Traceid":"3fb17ccd1a1982350ce18241c8ba3c53","Timenow":"1769642668245","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Sell state.
+STRATEGY: Generating orders! Elapsed: 1013ms
+HOT: [PERF] CreateOrder generated in 375us
+>>> ORDER OUT: {"reqId":"b-1769642673282-1769642668543","header":{"X-BAPI-TIMESTAMP":"1769642668543","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Buy","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.110","timeInForce":"PostOnly","orderLinkId":"b-1769642673282"}]}
+DEBUG: write_tls flushed 353 bytes. Wants write: false
+HOT: [PERF] CreateOrder generated in 375us
+>>> ORDER OUT: {"reqId":"s-1769642673282-1769642668543","header":{"X-BAPI-TIMESTAMP":"1769642668543","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Sell","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.410","timeInForce":"PostOnly","orderLinkId":"s-1769642673282"}]}
+DEBUG: write_tls flushed 354 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"b-1769642673282-1769642668543","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642669545","Traceid":"14797b9be20c0cc113bfa5094af312b4","Timenow":"1769642669546"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+HOT: Trade RAW: {"reqId":"s-1769642673282-1769642668543","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642669545","Traceid":"1b239b4219a7856073526c472b614c0b","Timenow":"1769642669546"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+STRATEGY: Generating orders! Elapsed: 1001ms
+STRATEGY: Generating orders! Elapsed: 1018ms
+HOT: [PERF] AmendOrder generated in 404us
+>>> ORDER OUT: {"reqId":"amend-b-1769642673282-1769642670563","header":{"X-BAPI-TIMESTAMP":"1769642670563","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.190","orderLinkId":"b-1769642673282"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 404us
+>>> ORDER OUT: {"reqId":"amend-s-1769642673282-1769642670564","header":{"X-BAPI-TIMESTAMP":"1769642670564","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.490","orderLinkId":"s-1769642673282"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642673282-1769642670563","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"Timenow":"1769642671279","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642671278","Traceid":"73c3cf3ed6eeba96558a4a33af5810df"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Buy state.
+HOT: Trade RAW: {"reqId":"amend-s-1769642673282-1769642670564","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642671279","Traceid":"21c602eb69c3fa080c5a569c527829c9","Timenow":"1769642671279"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Sell state.
+STRATEGY: Generating orders! Elapsed: 1019ms
+HOT: [PERF] CreateOrder generated in 382us
+>>> ORDER OUT: {"reqId":"b-1769642676316-1769642671583","header":{"X-BAPI-TIMESTAMP":"1769642671583","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Buy","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.190","timeInForce":"PostOnly","orderLinkId":"b-1769642676316"}]}
+DEBUG: write_tls flushed 353 bytes. Wants write: false
+HOT: [PERF] CreateOrder generated in 382us
+>>> ORDER OUT: {"reqId":"s-1769642676316-1769642671583","header":{"X-BAPI-TIMESTAMP":"1769642671583","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Sell","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.490","timeInForce":"PostOnly","orderLinkId":"s-1769642676316"}]}
+DEBUG: write_tls flushed 354 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"b-1769642676316-1769642671583","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642672298","Traceid":"0b47c82d9c3bcb87012223ea9067efad","Timenow":"1769642672299"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+HOT: Trade RAW: {"reqId":"s-1769642676316-1769642671583","retCode":110007,"retMsg":"ab not enough for new order","op":"order.create","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642672298","Traceid":"53ad034e47e78c2c759f1f6299e55a10","Timenow":"1769642672299","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110007, Msg: ab not enough for new order
+HOT: Private WS Read 915 bytes, state=Active
+HOT: Private Active entered, end=915
+HOT: decode_frame result: Ok(Some((915, 911)))
+HOT: Decoded frame, consumed=915, payload_len=911
+HOT: Private RAW: {"id":"109679807_position_1769642672986","topic":"position","creationTime":1769642672986,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"Buy","size":"0.2","entryPrice":"49.27","sessionAvgPrice":"","leverage":"20","positionValue":"9.854","positionBalance":"0","markPrice":"49.277","positionIM":"0.49791871","positionMM":"0.25153371","positionIMByMp":"0.49791871","positionMMByMp":"0.25153371","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0.0014","cumRealisedPnl":"-10.63590176","curRealisedPnl":"-0.00137956","createdTime":"1769610234626","updatedTime":"1769642657059","tpslMode":"Full","liqPrice":"45.54760681","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":2,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264811379,"breakEvenPrice":"49.304015","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: Buy, Size: 0.2, Idx: 0
+STRATEGY: Syncing Position State! Old: 0, New: 0.2
+HOT: decode_frame result: Ok(None)
+HOT: Private WS Read 794 bytes, state=Active
+HOT: Private Active entered, end=794
+HOT: decode_frame result: Ok(Some((794, 790)))
+HOT: Decoded frame, consumed=794, payload_len=790
+HOT: Private RAW: {"topic":"execution","id":"109679807_RIVERUSDT_266264811381","creationTime":1769642672987,"data":[{"category":"linear","symbol":"RIVERUSDT","closedSize":"0.2","execFee":"0.00345261","execId":"d9c2f88b-f148-577c-b4af-a46be7ef1a6d","execPrice":"49.323","execQty":"0.2","execType":"Trade","execValue":"9.8646","feeRate":"0.00035","tradeIv":"","markIv":"","blockTradeId":"","markPrice":"49.277","indexPrice":"","underlyingPrice":"","leavesQty":"0","orderId":"594d45d9-8d8e-49bd-9136-d760144cbdc0","orderLinkId":"","orderPrice":"45.605","orderQty":"0.2","orderType":"Market","stopOrderType":"UNKNOWN","side":"Sell","execTime":"1769642672985","isLeverage":"0","isMaker":false,"seq":266264811381,"marketUnit":"","execPnl":"0.0106","createType":"CreateByUser","extraFees":[],"feeCurrency":"USDT"}]}
+
+[EXECUTION] Trade Filled!
+STRATEGY: Fill detected! Side: Sell, Qty: 0.2, Px: 49.323, New Pos: 0, AvgEntry: 0
+HOT: decode_frame result: Ok(None)
+HOT: Private WS Read 829 bytes, state=Active
+HOT: Private Active entered, end=829
+HOT: decode_frame result: Ok(Some((829, 825)))
+HOT: Decoded frame, consumed=829, payload_len=825
+HOT: Private RAW: {"id":"109679807_position_1769642672988","topic":"position","creationTime":1769642672987,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.277","positionIM":"","positionMM":"","positionIMByMp":"","positionMMByMp":"","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"0","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264811381,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1079ms
+HOT: [PERF] AmendOrder generated in 399us
+>>> ORDER OUT: {"reqId":"amend-b-1769642676316-1769642672663","header":{"X-BAPI-TIMESTAMP":"1769642672663","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.180","orderLinkId":"b-1769642676316"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 399us
+>>> ORDER OUT: {"reqId":"amend-s-1769642676316-1769642672664","header":{"X-BAPI-TIMESTAMP":"1769642672664","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.470","orderLinkId":"s-1769642676316"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642676316-1769642672663","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642673381","Traceid":"2bc22d0e072a5da6205348e93a349caf","Timenow":"1769642673382"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Buy state.
+HOT: Trade RAW: {"reqId":"amend-s-1769642676316-1769642672664","retCode":110001,"retMsg":"order not exists or too late to replace","op":"order.amend","data":{},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642673381","Traceid":"38b4adf2436017a50eb473041f4125a2","Timenow":"1769642673382"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade Error Code: 110001, Msg: order not exists or too late to replace
+HOT: Trade -> Order Lost/Late (110001). Resetting Sell state.
+STRATEGY: Generating orders! Elapsed: 1059ms
+HOT: [PERF] CreateOrder generated in 411us
+>>> ORDER OUT: {"reqId":"b-1769642678419-1769642673723","header":{"X-BAPI-TIMESTAMP":"1769642673723","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Buy","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.140","timeInForce":"PostOnly","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 353 bytes. Wants write: false
+HOT: [PERF] CreateOrder generated in 411us
+>>> ORDER OUT: {"reqId":"s-1769642678419-1769642673723","header":{"X-BAPI-TIMESTAMP":"1769642673723","X-BAPI-RECV-WINDOW":"20000"},"op":"order.create","args":[{"category":"linear","symbol":"RIVERUSDT","side":"Sell","positionIdx":0,"orderType":"Limit","qty":"0.2","price":"49.440","timeInForce":"PostOnly","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 354 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"b-1769642678419-1769642673723","retCode":0,"retMsg":"OK","op":"order.create","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"Timenow":"1769642674439","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642674438","Traceid":"0c0f6e96d0667c557d3bce277a77a2a5"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"s-1769642678419-1769642673723","retCode":0,"retMsg":"OK","op":"order.create","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Timenow":"1769642674439","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642674439","Traceid":"60a8cc3ee84e305a626f74e38137504e"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642674441","topic":"position","creationTime":1769642674440,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.276","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264815514,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642674441","topic":"position","creationTime":1769642674441,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.276","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264815515,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1099ms
+STRATEGY: Generating orders! Elapsed: 1005ms
+STRATEGY: Generating orders! Elapsed: 1133ms
+STRATEGY: Generating orders! Elapsed: 1000ms
+HOT: [PERF] AmendOrder generated in 408us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642677964","header":{"X-BAPI-TIMESTAMP":"1769642677964","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.120","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 408us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642677964","header":{"X-BAPI-TIMESTAMP":"1769642677964","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.420","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642677964","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642678679","Traceid":"76c2a45a18a9343501d969fce919fbd1","Timenow":"1769642678679"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642677964","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642678679","Traceid":"6589c649a74320fd7297aa95bab6bda1","Timenow":"1769642678679"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642678682","topic":"position","creationTime":1769642678682,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.245","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264830126,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642678683","topic":"position","creationTime":1769642678682,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.245","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264830139,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1004ms
+STRATEGY: Generating orders! Elapsed: 1214ms
+STRATEGY: Generating orders! Elapsed: 1078ms
+HOT: [PERF] AmendOrder generated in 409us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642681263","header":{"X-BAPI-TIMESTAMP":"1769642681263","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.110","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 409us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642681263","header":{"X-BAPI-TIMESTAMP":"1769642681263","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.410","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642681263","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642681978","Traceid":"58ec751c71b68a6d33dcc3018336dd84","Timenow":"1769642681979"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642681263","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Traceid":"2fbee5a41ed83389193c5f9b33e0c934","Timenow":"1769642681979","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642681978"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642681981","topic":"position","creationTime":1769642681980,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.243","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264841851,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642681981","topic":"position","creationTime":1769642681980,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.243","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264841853,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1019ms
+STRATEGY: Generating orders! Elapsed: 1099ms
+STRATEGY: Generating orders! Elapsed: 1179ms
+STRATEGY: Generating orders! Elapsed: 1002ms
+STRATEGY: Generating orders! Elapsed: 1049ms
+STRATEGY: Generating orders! Elapsed: 1091ms
+STRATEGY: Generating orders! Elapsed: 1001ms
+HOT: [PERF] AmendOrder generated in 389us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642688710","header":{"X-BAPI-TIMESTAMP":"1769642688710","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.090","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 389us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642688711","header":{"X-BAPI-TIMESTAMP":"1769642688711","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.390","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642688711","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642689426","Traceid":"1eadeab2c688e042633130afeb97ceb3","Timenow":"1769642689426","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642688710","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"Traceid":"6a61bb7940c57dae37ab26994822ddfe","Timenow":"1769642689426","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642689426"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642689429","topic":"position","creationTime":1769642689428,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.229","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264878764,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1012ms
+HOT: [PERF] AmendOrder generated in 447us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642689723","header":{"X-BAPI-TIMESTAMP":"1769642689723","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.070","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 447us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642689724","header":{"X-BAPI-TIMESTAMP":"1769642689724","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.370","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642689723","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642690439","Traceid":"05c939bbde0bab27432eb0b50864a5df","Timenow":"1769642690439","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642689724","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Traceid":"0a0de79781f598c64c82e7cb080d2a99","Timenow":"1769642690439","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642690439"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642690442","topic":"position","creationTime":1769642690441,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.226","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264883829,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642690442","topic":"position","creationTime":1769642690441,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.226","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264883831,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1007ms
+HOT: [PERF] AmendOrder generated in 406us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642690731","header":{"X-BAPI-TIMESTAMP":"1769642690731","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.030","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 406us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642690731","header":{"X-BAPI-TIMESTAMP":"1769642690731","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.330","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642690731","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642691446","Traceid":"2cf7aef0420a81fd093870b46c898697","Timenow":"1769642691447","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642690731","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642691447","Traceid":"1f9cb6a02a2956fb1d32a0ac26862260","Timenow":"1769642691447"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642691449","topic":"position","creationTime":1769642691449,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.146","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264891012,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1011ms
+HOT: [PERF] AmendOrder generated in 397us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642691743","header":{"X-BAPI-TIMESTAMP":"1769642691743","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.020","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 397us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642691744","header":{"X-BAPI-TIMESTAMP":"1769642691744","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.320","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642691743","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"Traceid":"4b1201da2d7c5ad20d02af4f3b1317b3","Timenow":"1769642692460","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642692460"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642691744","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642692460","Traceid":"6f3553a17eed38246eb87096a3f96b4c","Timenow":"1769642692460","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642692462","topic":"position","creationTime":1769642692462,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.181","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264894601,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642692462","topic":"position","creationTime":1769642692462,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.181","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264894603,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1102ms
+HOT: [PERF] AmendOrder generated in 409us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642692846","header":{"X-BAPI-TIMESTAMP":"1769642692846","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.030","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 409us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642692846","header":{"X-BAPI-TIMESTAMP":"1769642692846","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.330","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642692846","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"Traceid":"40c697537cb576b433c9f51061660a85","Timenow":"1769642693562","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642693562"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642692846","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642693562","Traceid":"5557372582aef80b0f65192075bf1e49","Timenow":"1769642693562"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642693564","topic":"position","creationTime":1769642693564,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.174","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264899143,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642693565","topic":"position","creationTime":1769642693564,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.174","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264899144,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1036ms
+STRATEGY: Generating orders! Elapsed: 1039ms
+HOT: [PERF] AmendOrder generated in 392us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642694923","header":{"X-BAPI-TIMESTAMP":"1769642694923","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.050","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 392us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642694923","header":{"X-BAPI-TIMESTAMP":"1769642694923","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.350","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642694923","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642695638","Traceid":"634751c33df9aae83944994538c83274","Timenow":"1769642695639"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642694923","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642695639","Traceid":"19cdb2168b69ae7b7b93df0b5b665ce0","Timenow":"1769642695639","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642695641","topic":"position","creationTime":1769642695640,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.197","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264907081,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642695641","topic":"position","creationTime":1769642695640,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.197","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264907083,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1003ms
+STRATEGY: Generating orders! Elapsed: 1015ms
+HOT: [PERF] AmendOrder generated in 401us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642696943","header":{"X-BAPI-TIMESTAMP":"1769642696943","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.080","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 401us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642696943","header":{"X-BAPI-TIMESTAMP":"1769642696943","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.380","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642696943","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642697658","Traceid":"0d1878e90c1a1515458756b068af1770","Timenow":"1769642697659"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642696943","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642697658","Traceid":"5be578fe118b0a7d7dce665ca3f6041b","Timenow":"1769642697659"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642697661","topic":"position","creationTime":1769642697660,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.198","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264914893,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642697661","topic":"position","creationTime":1769642697660,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.198","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264914898,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1020ms
+HOT: [PERF] AmendOrder generated in 379us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642697964","header":{"X-BAPI-TIMESTAMP":"1769642697964","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.100","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 379us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642697964","header":{"X-BAPI-TIMESTAMP":"1769642697964","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.400","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642697964","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642698679","Traceid":"5e4c01d5d7e8219312c34bac244d5d0e","Timenow":"1769642698679","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642697964","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642698679","Traceid":"78b3550289da8f0904c47c92d2bbd7c0","Timenow":"1769642698679","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642698682","topic":"position","creationTime":1769642698681,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.213","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264919658,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642698682","topic":"position","creationTime":1769642698681,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.213","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264919664,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1100ms
+STRATEGY: Generating orders! Elapsed: 1018ms
+HOT: [PERF] AmendOrder generated in 415us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642700083","header":{"X-BAPI-TIMESTAMP":"1769642700083","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.090","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 415us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642700083","header":{"X-BAPI-TIMESTAMP":"1769642700083","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.380","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642700083","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642700799","Traceid":"20e43da0b9a700a24644519ffbed49e3","Timenow":"1769642700799"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642700083","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642700798","Traceid":"621a3400e607fe2c305c9b6837a3a89f","Timenow":"1769642700799"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642700808","topic":"position","creationTime":1769642700808,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.233","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264932349,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1019ms
+HOT: [PERF] AmendOrder generated in 412us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642701103","header":{"X-BAPI-TIMESTAMP":"1769642701103","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.050","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 412us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642701103","header":{"X-BAPI-TIMESTAMP":"1769642701103","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.350","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642701103","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642701818","Traceid":"36a2739b3cdae2a238162a2c6ab39f38","Timenow":"1769642701819","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642701103","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642701819","Traceid":"3becba67ea2ae64f474a2d2ea562162c","Timenow":"1769642701819","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642701821","topic":"position","creationTime":1769642701820,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.232","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264941856,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642701821","topic":"position","creationTime":1769642701820,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.232","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264941857,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1001ms
+HOT: [PERF] AmendOrder generated in 413us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642702105","header":{"X-BAPI-TIMESTAMP":"1769642702105","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.060","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642702105","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642702820","Traceid":"6235a0535180dc4932e178e6a7c6787b","Timenow":"1769642702820"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642702823","topic":"position","creationTime":1769642702822,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.195","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264947164,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1018ms
+HOT: [PERF] AmendOrder generated in 387us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642703123","header":{"X-BAPI-TIMESTAMP":"1769642703123","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"48.980","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 387us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642703123","header":{"X-BAPI-TIMESTAMP":"1769642703123","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.280","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642703123","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642703838","Traceid":"4514ed084a4121530c50b98de5d839dc","Timenow":"1769642703839"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642703123","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Timenow":"1769642703839","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642703839","Traceid":"76b0d89b4fc69f0a4fe8ee3792a791b8"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642703841","topic":"position","creationTime":1769642703840,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.205","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264952565,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642703841","topic":"position","creationTime":1769642703840,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.205","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264952567,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1000ms
+HOT: [PERF] AmendOrder generated in 380us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642704124","header":{"X-BAPI-TIMESTAMP":"1769642704124","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.010","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 380us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642704124","header":{"X-BAPI-TIMESTAMP":"1769642704124","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.310","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642704124","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"Traceid":"1d327c2a2c6ea7425a9f8c05fa0939fd","Timenow":"1769642704840","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642704839"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642704124","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642704840","Traceid":"290220c1f58905c21ad1f789013251b3","Timenow":"1769642704840"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642704842","topic":"position","creationTime":1769642704842,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.133","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264959633,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1040ms
+HOT: [PERF] AmendOrder generated in 407us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642705165","header":{"X-BAPI-TIMESTAMP":"1769642705165","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.020","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 407us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642705165","header":{"X-BAPI-TIMESTAMP":"1769642705165","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.320","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642705165","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642705880","Traceid":"08b7daeb41009d1d7a83fa1bc94374cb","Timenow":"1769642705880"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642705165","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Traceid":"42bfe0870fb3f498046a8591a4d91f6d","Timenow":"1769642705880","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642705880"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642705883","topic":"position","creationTime":1769642705882,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.145","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264968409,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642705883","topic":"position","creationTime":1769642705882,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.145","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264968412,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1023ms
+STRATEGY: Generating orders! Elapsed: 1013ms
+HOT: [PERF] AmendOrder generated in 367us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642707203","header":{"X-BAPI-TIMESTAMP":"1769642707203","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.310","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642707203","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642707918","Traceid":"170db449b48fe8d65d2e07178e756ef4","Timenow":"1769642707919"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642707921","topic":"position","creationTime":1769642707920,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.168","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264978400,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1059ms
+HOT: [PERF] AmendOrder generated in 427us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642708263","header":{"X-BAPI-TIMESTAMP":"1769642708263","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"48.990","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 427us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642708263","header":{"X-BAPI-TIMESTAMP":"1769642708263","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.280","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642708263","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642708978","Traceid":"0b82545d407496e20a915cf66b9043c9","Timenow":"1769642708979"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642708263","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642708979","Traceid":"260f0f49e4def236092e966a9b14cbd0","Timenow":"1769642708979"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642708981","topic":"position","creationTime":1769642708980,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.127","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264987722,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642708981","topic":"position","creationTime":1769642708981,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.127","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266264987723,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1019ms
+STRATEGY: Generating orders! Elapsed: 1019ms
+HOT: [PERF] AmendOrder generated in 400us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642710303","header":{"X-BAPI-TIMESTAMP":"1769642710303","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"48.970","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 400us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642710303","header":{"X-BAPI-TIMESTAMP":"1769642710303","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.260","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642710303","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642711018","Traceid":"5b98bc6dd27cd9247de13c11725c3697","Timenow":"1769642711019"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642710303","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642711019","Traceid":"4c099738efc90562332a6ee621477f40","Timenow":"1769642711019","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642711021","topic":"position","creationTime":1769642711020,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.112","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265000120,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642711021","topic":"position","creationTime":1769642711021,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.112","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265000126,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1000ms
+STRATEGY: Generating orders! Elapsed: 1039ms
+HOT: [PERF] AmendOrder generated in 395us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642712343","header":{"X-BAPI-TIMESTAMP":"1769642712343","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"48.990","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 395us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642712343","header":{"X-BAPI-TIMESTAMP":"1769642712343","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.290","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642712343","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642713059","Traceid":"57322492d67fd2f773aef06de914410b","Timenow":"1769642713059","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642712343","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642713059","Traceid":"0323c4c695d44b695063b4e5dc9b03c4","Timenow":"1769642713059"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642713061","topic":"position","creationTime":1769642713061,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.107","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265005653,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642713062","topic":"position","creationTime":1769642713061,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.107","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265005654,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1031ms
+STRATEGY: Generating orders! Elapsed: 1068ms
+HOT: [PERF] AmendOrder generated in 411us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642714443","header":{"X-BAPI-TIMESTAMP":"1769642714443","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.000","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642714443","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642715158","Traceid":"546d1d7bf14b025b0e7efb393633c3d6","Timenow":"1769642715159"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642715161","topic":"position","creationTime":1769642715160,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.107","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265014188,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1019ms
+HOT: [PERF] AmendOrder generated in 400us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642715463","header":{"X-BAPI-TIMESTAMP":"1769642715463","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.040","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 400us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642715463","header":{"X-BAPI-TIMESTAMP":"1769642715463","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.330","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642715463","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642716179","Traceid":"2d29e049c1e3919817f0aac26b5bc36b","Timenow":"1769642716179","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642715463","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642716179","Traceid":"507e7a60bee666ec02261445938a304e","Timenow":"1769642716179"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642716181","topic":"position","creationTime":1769642716181,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.107","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265020536,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642716181","topic":"position","creationTime":1769642716181,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.107","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265020537,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1019ms
+HOT: [PERF] AmendOrder generated in 384us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642716483","header":{"X-BAPI-TIMESTAMP":"1769642716483","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.060","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 384us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642716483","header":{"X-BAPI-TIMESTAMP":"1769642716483","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.350","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642716483","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642717199","Traceid":"4854c68e43012e8969c67cc8261d15fb","Timenow":"1769642717199"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642716483","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642717199","Traceid":"08bf93fb66c5bc5b42055d605c6fbb95","Timenow":"1769642717199"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642717201","topic":"position","creationTime":1769642717201,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.107","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265024705,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642717202","topic":"position","creationTime":1769642717201,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.107","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265024707,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1019ms
+STRATEGY: Generating orders! Elapsed: 1039ms
+HOT: [PERF] AmendOrder generated in 434us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642718543","header":{"X-BAPI-TIMESTAMP":"1769642718543","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.050","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642718543","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642719258","Traceid":"66b38c20b891456a5b810474cf24644e","Timenow":"1769642719259"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 831 bytes, state=Active
+HOT: Private Active entered, end=831
+HOT: decode_frame result: Ok(Some((831, 827)))
+HOT: Decoded frame, consumed=831, payload_len=827
+HOT: Private RAW: {"id":"109679807_position_1769642719261","topic":"position","creationTime":1769642719260,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.15","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265032052,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1039ms
+HOT: [PERF] AmendOrder generated in 406us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642719583","header":{"X-BAPI-TIMESTAMP":"1769642719583","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.000","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 406us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642719583","header":{"X-BAPI-TIMESTAMP":"1769642719583","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.300","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642719583","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642720299","Traceid":"7a840f8989136c9f473f232d7e44789c","Timenow":"1769642720299","X-Bapi-Limit":"10"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642719583","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Timenow":"1769642720299","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642720299","Traceid":"093a9a0169d747e658078aa9cc6047f0"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642720301","topic":"position","creationTime":1769642720301,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.123","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265035257,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1039ms
+STRATEGY: Generating orders! Elapsed: 1000ms
+STRATEGY: Generating orders! Elapsed: 1039ms
+HOT: [PERF] AmendOrder generated in 438us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642722663","header":{"X-BAPI-TIMESTAMP":"1769642722663","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.040","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 438us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642722663","header":{"X-BAPI-TIMESTAMP":"1769642722663","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.340","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642722663","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"Timenow":"1769642723380","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642723380","Traceid":"470611e1da2cd12c29ab54e364089cc0"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642722663","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642723380","Traceid":"1595d928e09fbc3122eeb26704c453d4","Timenow":"1769642723380"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642723383","topic":"position","creationTime":1769642723382,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.124","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265046109,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642723383","topic":"position","creationTime":1769642723383,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.124","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265046111,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1000ms
+STRATEGY: Generating orders! Elapsed: 1000ms
+HOT: [PERF] AmendOrder generated in 398us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642724665","header":{"X-BAPI-TIMESTAMP":"1769642724665","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.010","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 398us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642724665","header":{"X-BAPI-TIMESTAMP":"1769642724665","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.310","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642724665","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642725381","Traceid":"5d8ef40853ebc42b06ce55658b6f531a","Timenow":"1769642725381"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642724665","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642725381","Traceid":"381a9b70cfdf31185116d48f8d2eede9","Timenow":"1769642725381","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642725383","topic":"position","creationTime":1769642725382,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.131","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265053609,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642725383","topic":"position","creationTime":1769642725383,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.131","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265053610,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1017ms
+HOT: [PERF] AmendOrder generated in 385us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642725683","header":{"X-BAPI-TIMESTAMP":"1769642725683","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.020","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 385us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642725683","header":{"X-BAPI-TIMESTAMP":"1769642725683","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.320","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642725683","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642726398","Traceid":"67c1762a85d9a3084f11ce8cdbdba629","Timenow":"1769642726399"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642725683","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Timenow":"1769642726399","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642726399","Traceid":"75afd89a6453f80464919da056280663"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642726401","topic":"position","creationTime":1769642726400,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.131","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265056716,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642726401","topic":"position","creationTime":1769642726400,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.131","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265056718,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1081ms
+HOT: [PERF] AmendOrder generated in 375us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642726765","header":{"X-BAPI-TIMESTAMP":"1769642726765","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.310","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642726765","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642727481","Traceid":"299f1cdc32ebb9646d8e459a75e4df36","Timenow":"1769642727481"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 832 bytes, state=Active
+HOT: Private Active entered, end=832
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642727483","topic":"position","creationTime":1769642727483,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.131","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265061421,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1018ms
+STRATEGY: Generating orders! Elapsed: 1019ms
+HOT: [PERF] AmendOrder generated in 416us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642728803","header":{"X-BAPI-TIMESTAMP":"1769642728803","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.060","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 416us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642728803","header":{"X-BAPI-TIMESTAMP":"1769642728803","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.350","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642728803","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642729518","Traceid":"44a822fb38a64bf517b9e9fcf819e38b","Timenow":"1769642729519"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642728803","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Traceid":"0f25895bcba82e324b725752d8f56748","Timenow":"1769642729519","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642729519"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642729521","topic":"position","creationTime":1769642729520,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.137","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265071322,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642729521","topic":"position","creationTime":1769642729520,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.137","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265071323,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1039ms
+HOT: [PERF] AmendOrder generated in 517us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642729843","header":{"X-BAPI-TIMESTAMP":"1769642729843","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.000","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 517us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642729843","header":{"X-BAPI-TIMESTAMP":"1769642729843","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.300","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642729843","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9","X-Bapi-Limit-Reset-Timestamp":"1769642730558","Traceid":"4b45723a951bfedd78276a970d7ca8a2","Timenow":"1769642730559"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642729843","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"Timenow":"1769642730559","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642730559","Traceid":"4c5e84fa6c70c8803d3b82e795dcd583"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642730561","topic":"position","creationTime":1769642730560,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.151","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265075614,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642730561","topic":"position","creationTime":1769642730560,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.151","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265075615,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1019ms
+HOT: [PERF] AmendOrder generated in 2419us
+>>> ORDER OUT: {"reqId":"amend-b-1769642678419-1769642730865","header":{"X-BAPI-TIMESTAMP":"1769642730865","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"48.990","orderLinkId":"b-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: [PERF] AmendOrder generated in 2419us
+>>> ORDER OUT: {"reqId":"amend-s-1769642678419-1769642730865","header":{"X-BAPI-TIMESTAMP":"1769642730865","X-BAPI-RECV-WINDOW":"20000"},"op":"order.amend","args":[{"category":"linear","symbol":"RIVERUSDT","qty":"0.2","price":"49.280","orderLinkId":"s-1769642678419"}]}
+DEBUG: write_tls flushed 284 bytes. Wants write: false
+HOT: Trade RAW: {"reqId":"amend-b-1769642678419-1769642730865","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"812842e8-fea4-4bc1-9621-c89ca8c81831","orderLinkId":"b-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit-Reset-Timestamp":"1769642731580","Traceid":"781093551b532a3666d076004d2d99bb","Timenow":"1769642731581","X-Bapi-Limit":"10","X-Bapi-Limit-Status":"9"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Trade RAW: {"reqId":"amend-s-1769642678419-1769642730865","retCode":0,"retMsg":"OK","op":"order.amend","data":{"orderId":"43c0280e-f44d-4379-a85d-b09c065edbe6","orderLinkId":"s-1769642678419"},"retExtInfo":{},"header":{"X-Bapi-Limit":"10","X-Bapi-Limit-Status":"8","X-Bapi-Limit-Reset-Timestamp":"1769642731581","Traceid":"1dbc0cb847e4f4995e1cf01abc07f65a","Timenow":"1769642731581"},"connId":"d5eahte95861re9mn77g-4tmbg"}
+HOT: Private WS Read 1664 bytes, state=Active
+HOT: Private Active entered, end=1664
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642731584","topic":"position","creationTime":1769642731583,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.151","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265081099,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(Some((832, 828)))
+HOT: Decoded frame, consumed=832, payload_len=828
+HOT: Private RAW: {"id":"109679807_position_1769642731584","topic":"position","creationTime":1769642731583,"data":[{"positionIdx":0,"tradeMode":0,"riskId":1,"riskLimitValue":"5000","symbol":"RIVERUSDT","side":"","size":"0","entryPrice":"0","sessionAvgPrice":"","leverage":"20","positionValue":"0","positionBalance":"0","markPrice":"49.151","positionIM":"0","positionMM":"0","positionIMByMp":"0","positionMMByMp":"0","takeProfit":"0","stopLoss":"0","trailingStop":"0","unrealisedPnl":"0","cumRealisedPnl":"-10.62875437","curRealisedPnl":"0","createdTime":"1769610234626","updatedTime":"1769642672987","tpslMode":"Full","liqPrice":"","bustPrice":"","category":"linear","positionStatus":"Normal","adlRankIndicator":0,"autoAddMargin":0,"leverageSysUpdatedTime":"","mmrSysUpdatedTime":"","seq":266265081102,"breakEvenPrice":"0","isReduceOnly":false}]}
+HOT: Received Position Update! Count: 1
+HOT: Pos Item -> Sym: RIVERUSDT, Side: , Size: 0, Idx: 0
+HOT: decode_frame result: Ok(None)
+STRATEGY: Generating orders! Elapsed: 1000ms
