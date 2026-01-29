@@ -19,4 +19,5 @@ itoa = "1.0"
 hex = "0.4"
 dotenv = "0.15"
 ureq = { version = "2.10", features = ["json"] }
+arrayvec = "0.7.6"
 

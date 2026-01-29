@@ -6,9 +6,12 @@ use simd_json::prelude::*;
 // For HFT challenge, we often just look for "b" (bids) and "a" (asks) arrays 
 // inside the JSON and iterate them.
 
-pub fn parse_and_update(data: &mut [u8], book: &mut L2OrderBook) -> Result<(), simd_json::Error> {
+pub fn parse_and_update(data: &mut [u8], book: &mut L2OrderBook) -> Result<u64, simd_json::Error> {
     // 1. Parse into Tape (Mutable, in-place)
     let tape = simd_json::to_borrowed_value(data)?;
+
+    // Extract Timestamp (ts)
+    let ts = tape.get("ts").and_then(|v| v.as_u64()).unwrap_or(0);
 
     // 2. Navigate without intermediate structs
     // Bybit structure: { "topic": "...", "data": { "b": [[p, q], ...], "a": [[p, q], ...] } }
@@ -59,5 +62,5 @@ pub fn parse_and_update(data: &mut [u8], book: &mut L2OrderBook) -> Result<(), s
         }
     }
     
-    Ok(())
+    Ok(ts)
 }

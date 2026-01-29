@@ -409,11 +409,11 @@ fn main() {
                                                 Ok(Some((consumed, payload))) => {
                                                     if !payload.is_empty() {
                                                          // Parse Bybit
-                                                         if let Ok(_) = core::parser::parse_and_update(payload, &mut book) {
+                                                         if let Ok(ts) = core::parser::parse_and_update(payload, &mut book) {
                                                                  // Trigger Strategy, but only send if authenticated
                                                              if trade_authenticated {
                                                              let strat_start = Instant::now();
-                                                             if let Some(actions) = strategy.on_tick(&book) {
+                                                             if let Some(actions) = strategy.on_tick(&book, ts) {
                                                                  let strat_cost = strat_start.elapsed().as_micros();
                                                                  // Loop through actions
                                                                  for action in actions {
@@ -456,6 +456,11 @@ fn main() {
                                                                              info!("HOT: Strategy requested ClosePosition: Side={}, Qty={} (Calc: {}us)", side, qty, strat_cost);
                                                                              format!(r#"{{"reqId":"close-{}-{}","header":{{"X-BAPI-TIMESTAMP":"{}","X-BAPI-RECV-WINDOW":"20000"}},"op":"order.create","args":[{{"category":"linear","symbol":"RIVERUSDT","side":"{}","positionIdx":0,"orderType":"Market","qty":"{:.1}","timeInForce":"GTC","reduceOnly":true,"orderLinkId":"close-{}-{}"}}]}}"#, 
                                                                                  side, ts_ms, ts_ms, side, qty, side, ts_ms)
+                                                                         },
+                                                                         ActionType::CancelAll => {
+                                                                             info!("HOT: Strategy requested CancelAll (Clean Sweep)");
+                                                                             format!(r#"{{"reqId":"cancel-all-{}","header":{{"X-BAPI-TIMESTAMP":"{}","X-BAPI-RECV-WINDOW":"20000"}},"op":"order.cancel-all","args":[{{"category":"linear","symbol":"RIVERUSDT"}}]}}"#, 
+                                                                                 ts_ms, ts_ms)
                                                                          },
                                                                          _ => String::new()
                                                                      };
@@ -722,7 +727,22 @@ fn main() {
                                                                                   strategy.reset_order(s);
                                                                               }
                                                                          }
-                                                                     }
+                                                                      }
+                                                                      
+                                                                      // CRITICAL ERROR HANDLING for POSITION LOOP
+                                                                      // 110017: ReduceOnly failed because pos is 0
+                                                                      // 10404: Params error (often related to invalid qty/price on close)
+                                                                      // 10006: Rate Limit (STOP EVERYTHING)
+                                                                      if ret_code == 110017 || ret_code == 10404 {
+                                                                          eprintln!("STRATEGY: >>> CRITICAL POSITION SYNC ERROR (Code: {}). Forcing Position = 0.", ret_code);
+                                                                          strategy.sync_position(0.0, 0.0);
+                                                                          strategy.has_active_buy = false;
+                                                                          strategy.has_active_sell = false;
+                                                                      }
+                                                                      if ret_code == 10006 {
+                                                                           eprintln!("STRATEGY: >>> API RATE LIMIT EXCEEDED! SLEEPING 10s...");
+                                                                           thread::sleep(Duration::from_secs(10));
+                                                                      }
                                                                  }
                                                              }
                                                              // Check for Execution
