@@ -465,12 +465,6 @@ fn main() {
                                                                              format!(r#"{{"reqId":"close-{}-{}","header":{{"X-BAPI-TIMESTAMP":"{}","X-BAPI-RECV-WINDOW":"20000"}},"op":"order.create","args":[{{"category":"linear","symbol":"RIVERUSDT","side":"{}","positionIdx":0,"orderType":"Market","qty":"{:.1}","timeInForce":"GTC","reduceOnly":true,"orderLinkId":"close-{}-{}"}}]}}"#, 
                                                                                  side, ts_ms, ts_ms, side, qty, side, ts_ms)
                                                                          },
-                                                                         ActionType::SetTradingStop { price, side } => {
-                                                                            info!("HOT: Strategy requested SetTradingStop (SL) @ {}", price);
-                                                                            // Requires positionIdx=0 for One-Way Mode
-                                                                            format!(r#"{{"reqId":"sl-{}-{}","header":{{"X-BAPI-TIMESTAMP":"{}","X-BAPI-RECV-WINDOW":"20000"}},"op":"position.trading-stop","args":[{{"category":"linear","symbol":"RIVERUSDT","stopLoss":"{:.3}","positionIdx":0}}]}}"#, 
-                                                                                side, ts_ms, ts_ms, price)
-                                                                         },
                                                                          ActionType::CancelAll => {
                                                                              info!("HOT: Strategy requested CancelAll (Clean Sweep)");
                                                                              format!(r#"{{"reqId":"cancel-all-{}","header":{{"X-BAPI-TIMESTAMP":"{}","X-BAPI-RECV-WINDOW":"20000"}},"op":"order.cancel-all","args":[{{"category":"linear","symbol":"RIVERUSDT"}}]}}"#, 

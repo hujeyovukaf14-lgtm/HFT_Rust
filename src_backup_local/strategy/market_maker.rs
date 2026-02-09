@@ -7,7 +7,6 @@ pub enum ActionType {
     AmendOrder { price: f64, qty: f64, side: &'static str, link_id: String },
     CancelOrder { link_id: String },
     ClosePosition { qty: f64, side: &'static str },
-    SetTradingStop { price: f64, side: &'static str }, // Server-side SL
     CancelAll,
     None,
 }
@@ -35,11 +34,6 @@ pub struct MarketMaker {
     pub active_buy_price: f64,
     pub active_sell_price: f64,
     pub last_update_mid: f64,
-    
-    // Risk / Exit Logic
-    pub highest_pnl_pct: f64,
-    pub server_sl_set: bool, // Track if we've sent the request to Bybit
-
     // Velocity Logic
     pub last_tick_arrival_ts: Instant,
     pub tick_interval_ema: f64,
@@ -66,10 +60,6 @@ impl MarketMaker {
             active_sell_price: 0.0,
 
             last_update_mid: 0.0,
-            
-            highest_pnl_pct: -1.0, // Start low
-            server_sl_set: false,
-
              // Init with simulated 100ms interval (10 TPS) to start safe? Or slow (1s = 1 TPS)
             last_tick_arrival_ts: Instant::now(),
             tick_interval_ema: 1_000_000.0, // Start slow (1 TPS)
@@ -86,9 +76,6 @@ impl MarketMaker {
         // Weighted Average Entry Price
         if self.position == 0.0 {
             self.entry_price = px;
-            // NEW POSITION: Reset Risk State
-            self.highest_pnl_pct = -1.0; 
-            self.server_sl_set = false;
         } else {
              // If adding to position (same side)
              let is_long = self.position > 0.0;
@@ -97,16 +84,6 @@ impl MarketMaker {
                  let total_val = (self.position.abs() * self.entry_price) + (qty * px);
                  let new_qty = self.position.abs() + qty;
                  self.entry_price = total_val / new_qty;
-                 
-                 // Adding to position might worsen PnL pct, reset logic slightly? 
-                 // Or keep highest_pnl if we are still profitable? 
-                 // For safety, let's keep highest_pnl but knowing entry_price changed, calc might change.
-                 // Actually, usually better to reset tracking on scale-in to avoid premature close.
-                 self.highest_pnl_pct = -1.0; 
-                 // Note: server_sl_set might still be true if we just scaled in. 
-                 // If entry price moved significantly closer to market, old SL might be invalid. 
-                 // Let's force reset to ensure we re-evaluate SL.
-                 self.server_sl_set = false; 
              }
              // If reducing, entry price stays same, realized PnL happens.
         }
@@ -119,8 +96,6 @@ impl MarketMaker {
         
         if self.position.abs() < 0.0001 {
              self.entry_price = 0.0;
-             self.highest_pnl_pct = -1.0;
-             self.server_sl_set = false;
         }
 
         self.last_trade_ts = Some(Instant::now());
@@ -153,8 +128,6 @@ impl MarketMaker {
             if self.position.abs() < 0.0001 {
                 self.last_trade_ts = None;
                 self.entry_price = 0.0;
-                self.highest_pnl_pct = -1.0;
-                self.server_sl_set = false;
                 // DO NOT cancel orders here aggressively, on_tick will handle cancellations if needed
             }
         }
@@ -188,77 +161,36 @@ impl MarketMaker {
              let mut reason = "";
              
              // C. Calc PnL for logic
-             let unrealized_pnl_pct = if self.position > 0.0 {
+             let unrealized_pnl = if self.position > 0.0 {
                  (current_bid - self.entry_price) / self.entry_price
              } else {
                  (self.entry_price - current_ask) / self.entry_price
              };
-             
-             // Update Max PnL (High Watermark)
-             if unrealized_pnl_pct > self.highest_pnl_pct {
-                 self.highest_pnl_pct = unrealized_pnl_pct;
-             }
 
-             // ----------------- EXIT LOGIC -----------------
-
-             // 1. HARD TAKE PROFIT (+0.5%) - Primary Goal
-             if unrealized_pnl_pct >= 0.005 {
-                 // Close IMMEDIATELY
-                 close_signal = true;
-                 reason = "Hard TP (+0.5%)";
-             }
-
-             // 2. SERVER-SIDE BREAKEVEN STOP (+0.05% Trigger)
-             // Only done ONCE per position to put safety net on Bybit server.
-             // We use 0.05% buffer to cover fees (approx 0.02% taker or 0.05%)
-             if !self.server_sl_set && unrealized_pnl_pct >= 0.0005 {
-                 // Push Action to set SL at Entry Price
-                 println!("STRATEGY: Setting Server-Side Breakeven Stop! PnL: {:.4}%", unrealized_pnl_pct * 100.0);
-                 actions.push(Action {
-                     action_type: ActionType::SetTradingStop {
-                         price: self.entry_price, // Breakeven
-                         side: if self.position > 0.0 { "Buy" } else { "Sell" }, // Pos Side
-                     }
-                 });
-                 self.server_sl_set = true;
-             }
-
-             // 3. LOGICAL TRAILING STOP (Step 0.1%)
-             // Logic: We lock in profit in steps.
-             // If MaxPnL reached 0.15% -> we want to lock 0.05%? 
-             // User Request: "Trailing with step 0.1%". 
-             // Interpretation: 
-             // If PnL drops below (Highest_Step - 0.1%), we close.
-             // Step function: Floor(Highest / 0.1%) * 0.1%
-             
-             let step = 0.001; // 0.1%
-             let highest_step_val = (self.highest_pnl_pct / step).floor() * step;
-             
-             // Trigger Level: 0.1% below the current step level.
-             // e.g. High=0.25% (Step 0.20%). Trigger = 0.10%. 
-             // e.g. High=0.15% (Step 0.10%). Trigger = 0.00% (Breakeven).
-             // e.g. High=0.08% (Step 0.00%). Trigger = -0.10% (Stop Loss?).
-             
-             let trailing_trigger = highest_step_val - 0.001; 
-             
-             // If we are below the trigger, close.
-             // Only apply this checks if we are actually in profit territory or at least neutral,
-             // otherwise standard time-based logic handles loss.
-             if self.highest_pnl_pct >= 0.001 { // Only start trailing if we touched +0.1%
-                  if unrealized_pnl_pct < trailing_trigger {
-                      close_signal = true;
-                      reason = "Trailing Stop Hit";
-                  }
-             }
-
-             // 4. TIME-BASED EXIT (Panic)
-             // If we are losing money and time is up -> Close.
-             if !close_signal && unrealized_pnl_pct <= 0.0 {
+             // A. Time-based Exit (3 seconds) - ONLY IF NOT IN PROFIT
+             // If we are profitable, we hold (let it run to TP). If losing, we kill it quickly.
+             if unrealized_pnl <= 0.0 {
                  if let Some(ts) = self.last_trade_ts {
                      if ts.elapsed() > Duration::from_secs(3) {
                          close_signal = true;
                          reason = "Time Limit (3s) & Loss";
                      }
+                 }
+             }
+
+             // B. Take Profit (0.3%)
+             // Long: Sell > Entry * 1.003
+             // Short: Buy < Entry * 0.997
+             // Logic remains same
+             if self.position > 0.0 {
+                 if current_bid > self.entry_price * 1.05 {
+                     close_signal = true;
+                     reason = "Take Profit (+0.5%)";
+                 }
+             } else {
+                 if current_ask < self.entry_price * 0.995 {
+                     close_signal = true; 
+                     reason = "Take Profit (+0.5%)";
                  }
              }
              
@@ -285,7 +217,6 @@ impl MarketMaker {
                  // once position is confirmed closed (sync will handle actual qty)
                  self.has_active_buy = false;
                  self.has_active_sell = false;
-                 self.server_sl_set = false; // Reset SL flag since we are closing manualy
 
                  // Retrying until position is 0 (handled by on_fill)
                  // self.last_trade_ts = None; // REMOVED to allow retry spam (with reduceOnly)
@@ -463,7 +394,7 @@ impl MarketMaker {
         // Size: Fixed 0.3 for test
         // let raw_qty: f64 = 12.0 / target_buy_price;
         // let buy_qty = raw_qty.max(1.0).round();
-        let buy_qty = 0.8;
+        let buy_qty = 0.2;
         // Assuming RIVER tick size allows... RIVER is typical alt.
         
         // BUY SIDE
@@ -537,7 +468,5 @@ impl MarketMaker {
             self.active_sell_price = 0.0;
             self.active_sell_link_id = format!("s-{}", ts / 1000); // Millis
         }
-        // If reset order is called on critical failure, we should probably reset sl flag too if it was related?
-        // But reset_order is side-specific. safely ignore.
     }
 }
